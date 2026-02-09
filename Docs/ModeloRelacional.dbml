@@ -1,1 +1,124 @@
+Table usuarios{
+  id_usuario varchar(30) [primary key]
+  primer_nombre varchar(100) 
+  segundo_nombre varchar(100)
+  primer_apellido varchar(100)
+  segundo_apellido varchar(100)
+  fecha_ingreso date
+  salario_mensual_base decimal(12,2)
+  estado_usuario bool
 
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+  //en vez de id, nombre usuario y contrasena
+}
+
+Table presupuestos{
+  id_presupuesto varchar(30) [primary key]
+  id_usuario varchar(30)
+  nombre_presupuesto varchar(300)
+  anio_inicio smallint
+  mes_inicio tinyint
+  anio_fin smallint
+  mes_fin tinyint
+  total_ingresos_planificados decimal(12,2)
+  total_gastos_planificados decimal(12,2)
+  total_ahorro_planificado decimal(12,2)
+  fecha_y_hora_creacion datetime2
+  estado_presupuesto varchar(100)
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+Table categorias{
+  id_categoria varchar(30) [primary key]
+  nombre_categoria varchar(300)
+  tipo_categoria varchar(100)
+  nombre_icono varchar(100)
+  color_hexademical varchar(7)
+  orden_presentacion int
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+Table subcategorias{
+  id_subcategoria varchar(30) [primary key]
+  id_categoria varchar(30)
+  nombre_subcategoria varchar(300)
+  estado_subcategoria bool
+  subcategoria_por_defecto bool
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+Table prespuesto_detalles{
+  id_detalle varchar(30) [primary key]
+  id_presupuesto varchar(30)
+  id_subcategoria varchar(30)
+  monto_mensual decimal(12,2)
+  observaciones varchar(500)
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+Table obligaciones_fijas{
+  id_obligacion varchar(30) [primary key]
+  id_usuario varchar(30)
+  id_subcategoria varchar(30)
+  nombre_obligacion varchar(300)
+  monto_mensual decimal(12,2)
+  dia_vencimiento tinyint
+  estado_vigente bool
+  fecha_inicio date
+  fecha_fin date
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+Table transacciones{
+  id_transaccion varchar(30) [primary key]
+  id_usuario varchar(30)
+  id_presupuesto varchar(30)
+  anio_transaccion smallint
+  mes_transaccion tinyint
+  id_subcategoria varchar(30)
+  id_obligacion  varchar(30)
+  tipo_transaccionn varchar(100)
+  descripcion_movimiento varchar(300)
+  monto_transaccion decimal(12,2)
+  fecha_transaccion date
+  metodo_pago varchar(100)
+  numero_factura int
+  observaciones varchar(500)
+  fecha_y_hora_registro datetime2
+
+  creado_por varchar(30)
+  modificado_por varchar(30)
+  creado_en datetime2
+  modificado_en datetime2
+}
+
+
+
+Ref: "usuarios"."id_usuario" < "presupuestos"."id_usuario"
+
+Ref: "categorias"."id_categoria" < "subcategorias"."id_categoria"
+
+Ref: "prespuesto_detalles"."id_presupuesto" < "presupuestos"."id_presupuesto"
