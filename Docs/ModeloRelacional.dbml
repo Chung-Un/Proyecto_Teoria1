@@ -12,12 +12,11 @@ Table usuarios{
   modificado_por varchar(30)
   creado_en datetime2
   modificado_en datetime2
-  //en vez de id, nombre usuario y contrasena
 }
 
 Table presupuestos{
   id_presupuesto varchar(30) [primary key]
-  id_usuario varchar(30)
+  id_usuario varchar(30) //llave foranea
   nombre_presupuesto varchar(300)
   anio_inicio smallint
   mes_inicio tinyint
@@ -64,8 +63,8 @@ Table subcategorias{
 
 Table prespuesto_detalles{
   id_detalle varchar(30) [primary key]
-  id_presupuesto varchar(30)
-  id_subcategoria varchar(30)
+  id_presupuesto varchar(30) //lave foranea
+  id_subcategoria varchar(30)//llave foranea
   monto_mensual decimal(12,2)
   observaciones varchar(500)
 
@@ -78,7 +77,7 @@ Table prespuesto_detalles{
 Table obligaciones_fijas{
   id_obligacion varchar(30) [primary key]
   id_usuario varchar(30)
-  id_subcategoria varchar(30)
+  id_subcategoria varchar(30) //foranea
   nombre_obligacion varchar(300)
   monto_mensual decimal(12,2)
   dia_vencimiento tinyint
@@ -95,7 +94,7 @@ Table obligaciones_fijas{
 Table transacciones{
   id_transaccion varchar(30) [primary key]
   id_usuario varchar(30)
-  id_presupuesto varchar(30)
+  id_presupuesto_detalle varchar(30)
   anio_transaccion smallint
   mes_transaccion tinyint
   id_subcategoria varchar(30)
@@ -115,10 +114,26 @@ Table transacciones{
   modificado_en datetime2
 }
 
+Table transacciones_obligaciones_fijas{
+  id_transaccion varchar(30) [primary key]
+  id_obligacion varchar(30)//foranea
+}
+
+
+
 
 
 Ref: "usuarios"."id_usuario" < "presupuestos"."id_usuario"
 
+Ref: "presupuestos"."id_presupuesto" < "prespuesto_detalles"."id_presupuesto"
+
+Ref: "transacciones"."id_presupuesto_detalle" < "prespuesto_detalles"."id_presupuesto"
+
+Ref: "prespuesto_detalles"."id_subcategoria" < "subcategorias"."id_subcategoria"
+
+Ref: "transacciones"."id_transaccion" < "transacciones_obligaciones_fijas"."id_transaccion"
+
+Ref: "obligaciones_fijas"."id_obligacion" < "transacciones_obligaciones_fijas"."id_obligacion"
+
 Ref: "categorias"."id_categoria" < "subcategorias"."id_categoria"
 
-Ref: "prespuesto_detalles"."id_presupuesto" < "presupuestos"."id_presupuesto"
