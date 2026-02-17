@@ -50,7 +50,7 @@ Table categorias{
 
 Table subcategorias{
   id_subcategoria varchar(30) [primary key]
-  id_categoria varchar(30)
+  id_categoria varchar(30) //fk
   nombre_subcategoria varchar(300)
   estado_subcategoria bool
   subcategoria_por_defecto bool
@@ -76,7 +76,6 @@ Table prespuesto_detalles{
 
 Table obligaciones_fijas{
   id_obligacion varchar(30) [primary key]
-  id_usuario varchar(30)
   id_subcategoria varchar(30) //foranea
   nombre_obligacion varchar(300)
   monto_mensual decimal(12,2)
@@ -98,7 +97,6 @@ Table transacciones{
   anio_transaccion smallint
   mes_transaccion tinyint
   id_subcategoria varchar(30)
-  id_obligacion  varchar(30)
   tipo_transaccionn varchar(100)
   descripcion_movimiento varchar(300)
   monto_transaccion decimal(12,2)
@@ -121,8 +119,6 @@ Table transacciones_obligaciones_fijas{
 
 
 
-
-
 Ref: "usuarios"."id_usuario" < "presupuestos"."id_usuario"
 
 Ref: "presupuestos"."id_presupuesto" < "prespuesto_detalles"."id_presupuesto"
@@ -137,3 +133,10 @@ Ref: "obligaciones_fijas"."id_obligacion" < "transacciones_obligaciones_fijas"."
 
 Ref: "categorias"."id_categoria" < "subcategorias"."id_categoria"
 
+
+
+
+
+
+
+Ref: "subcategorias"."id_subcategoria" < "obligaciones_fijas"."id_subcategoria"
