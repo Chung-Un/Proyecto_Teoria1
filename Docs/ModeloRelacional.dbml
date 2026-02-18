@@ -1,10 +1,12 @@
 Table usuarios{
   id_usuario varchar(30) [primary key]
+  password varchar(50) 
+  correo_electronico varchar(100) //indice unico
   primer_nombre varchar(100) 
   segundo_nombre varchar(100)
   primer_apellido varchar(100)
   segundo_apellido varchar(100)
-  fecha_ingreso date
+  fecha_ingreso datetime2
   salario_mensual_base decimal(12,2)
   estado_usuario bool
 
@@ -12,6 +14,7 @@ Table usuarios{
   modificado_por varchar(30)
   creado_en datetime2
   modificado_en datetime2
+  //pata gallo debe quedar con llave foranea
 }
 
 Table presupuestos{
@@ -110,6 +113,7 @@ Table transacciones{
   modificado_por varchar(30)
   creado_en datetime2
   modificado_en datetime2
+  
 }
 
 Table transacciones_obligaciones_fijas{
@@ -117,6 +121,7 @@ Table transacciones_obligaciones_fijas{
   id_obligacion varchar(30)//foranea
 }
 
+//puerto por defecto de mssql
 
 
 Ref: "usuarios"."id_usuario" < "presupuestos"."id_usuario"
@@ -125,7 +130,6 @@ Ref: "presupuestos"."id_presupuesto" < "prespuesto_detalles"."id_presupuesto"
 
 Ref: "transacciones"."id_presupuesto_detalle" < "prespuesto_detalles"."id_presupuesto"
 
-Ref: "prespuesto_detalles"."id_subcategoria" < "subcategorias"."id_subcategoria"
 
 Ref: "transacciones"."id_transaccion" < "transacciones_obligaciones_fijas"."id_transaccion"
 
@@ -140,3 +144,5 @@ Ref: "categorias"."id_categoria" < "subcategorias"."id_categoria"
 
 
 Ref: "subcategorias"."id_subcategoria" < "obligaciones_fijas"."id_subcategoria"
+
+Ref: "subcategorias"."id_subcategoria" < "prespuesto_detalles"."id_subcategoria"
