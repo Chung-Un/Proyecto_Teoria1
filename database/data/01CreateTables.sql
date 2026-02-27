@@ -9,8 +9,8 @@ CREATE TABLE [usuarios] (
   [fecha_ingreso] datetime2,
   [salario_mensual_base] decimal(12,2),
   [estado_usuario] bit,
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -29,8 +29,8 @@ CREATE TABLE [presupuestos] (
   [total_ahorro_planificado] decimal(12,2),
   [fecha_y_hora_creacion] datetime2,
   [estado_presupuesto] varchar(100),
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -43,8 +43,8 @@ CREATE TABLE [categorias] (
   [nombre_icono] varchar(100),
   [color_hexademical] varchar(7),
   [orden_presentacion] int,
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -56,8 +56,8 @@ CREATE TABLE [subcategorias] (
   [nombre_subcategoria] varchar(300),
   [estado_subcategoria] bit,
   [subcategoria_por_defecto] bit,
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -69,8 +69,8 @@ CREATE TABLE [prespuesto_detalles] (
   [id_subcategoria] int,
   [monto_mensual] decimal(12,2),
   [observaciones] varchar(500),
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -85,8 +85,8 @@ CREATE TABLE [obligaciones_fijas] (
   [estado_vigente] bit,
   [fecha_inicio] date,
   [fecha_fin] date,
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
@@ -107,8 +107,8 @@ CREATE TABLE [transacciones] (
   [numero_factura] int,
   [observaciones] varchar(500),
   [fecha_y_hora_registro] datetime2,
-  [creado_por] varchar(30),
-  [modificado_por] varchar(30),
+  [creado_por] int,
+  [modificado_por] int,
   [creado_en] datetime2,
   [modificado_en] datetime2
 )
