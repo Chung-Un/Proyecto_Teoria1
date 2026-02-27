@@ -1,5 +1,5 @@
 Table usuarios{
-  id_usuario varchar(30) [primary key]
+  id_usuario int [primary key, note: "IDENTITY(1,1)"]
   password varchar(50) 
   correo_electronico varchar(100) //indice unico
   primer_nombre varchar(100) 
@@ -18,8 +18,8 @@ Table usuarios{
 }
 
 Table presupuestos{
-  id_presupuesto varchar(30) [primary key]
-  id_usuario varchar(30) //llave foranea
+  id_presupuesto int [primary key, note: "IDENTITY(1,1)"]
+  id_usuario int //llave foranea
   nombre_presupuesto varchar(300)
   anio_inicio smallint
   mes_inicio tinyint
@@ -38,7 +38,7 @@ Table presupuestos{
 }
 
 Table categorias{
-  id_categoria varchar(30) [primary key]
+  id_categoria int [primary key, note: "IDENTITY(1,1)"]
   nombre_categoria varchar(300)
   tipo_categoria varchar(100)
   nombre_icono varchar(100)
@@ -52,8 +52,8 @@ Table categorias{
 }
 
 Table subcategorias{
-  id_subcategoria varchar(30) [primary key]
-  id_categoria varchar(30) //fk
+  id_subcategoria int [primary key, note: "IDENTITY(1,1)"]
+  id_categoria int //fk
   nombre_subcategoria varchar(300)
   estado_subcategoria bit
   subcategoria_por_defecto bit
@@ -65,9 +65,9 @@ Table subcategorias{
 }
 
 Table prespuesto_detalles{
-  id_detalle varchar(30) [primary key]
-  id_presupuesto varchar(30) //lave foranea
-  id_subcategoria varchar(30)//llave foranea
+  id_detalle int [primary key, note: "IDENTITY(1,1)"]
+  id_presupuesto int //lave foranea
+  id_subcategoria int//llave foranea
   monto_mensual decimal(12,2)
   observaciones varchar(500)
 
@@ -78,8 +78,8 @@ Table prespuesto_detalles{
 }
 
 Table obligaciones_fijas{
-  id_obligacion varchar(30) [primary key]
-  id_subcategoria varchar(30) //foranea
+  id_obligacion int [primary key, note: "IDENTITY(1,1)"]
+  id_subcategoria int //foranea
   nombre_obligacion varchar(300)
   monto_mensual decimal(12,2)
   dia_vencimiento tinyint
@@ -94,12 +94,12 @@ Table obligaciones_fijas{
 }
 
 Table transacciones{
-  id_transaccion varchar(30) [primary key]
-  id_usuario varchar(30)
-  id_detalle varchar(30)
+  id_transaccion int [primary key, note: "IDENTITY(1,1)"]
+  id_usuario int
+  id_detalle int
   anio_transaccion smallint
   mes_transaccion tinyint
-  id_subcategoria varchar(30)
+  id_subcategoria int
   tipo_transaccion varchar(100)
   descripcion_movimiento varchar(300)
   monto_transaccion decimal(12,2)
@@ -117,8 +117,8 @@ Table transacciones{
 }
 
 Table transacciones_obligaciones_fijas{
-  id_transaccion varchar(30) [primary key]
-  id_obligacion varchar(30)//foranea
+  id_transaccion int [primary key]
+  id_obligacion int//foranea
 }
 
 //puerto por defecto de mssql
