@@ -8,7 +8,7 @@ CREATE TABLE [usuarios] (
   [segundo_apellido] varchar(100),
   [fecha_ingreso] datetime2,
   [salario_mensual_base] decimal(12,2),
-  [estado_usuario] bool,
+  [estado_usuario] bit,
   [creado_por] varchar(30),
   [modificado_por] varchar(30),
   [creado_en] datetime2,
@@ -54,8 +54,8 @@ CREATE TABLE [subcategorias] (
   [id_subcategoria] varchar(30) PRIMARY KEY,
   [id_categoria] varchar(30),
   [nombre_subcategoria] varchar(300),
-  [estado_subcategoria] bool,
-  [subcategoria_por_defecto] bool,
+  [estado_subcategoria] bit,
+  [subcategoria_por_defecto] bit,
   [creado_por] varchar(30),
   [modificado_por] varchar(30),
   [creado_en] datetime2,
@@ -82,7 +82,7 @@ CREATE TABLE [obligaciones_fijas] (
   [nombre_obligacion] varchar(300),
   [monto_mensual] decimal(12,2),
   [dia_vencimiento] tinyint,
-  [estado_vigente] bool,
+  [estado_vigente] bit,
   [fecha_inicio] date,
   [fecha_fin] date,
   [creado_por] varchar(30),
@@ -95,11 +95,11 @@ GO
 CREATE TABLE [transacciones] (
   [id_transaccion] varchar(30) PRIMARY KEY,
   [id_usuario] varchar(30),
-  [id_presupuesto_detalle] varchar(30),
+  [id_detalle] varchar(30),
   [anio_transaccion] smallint,
   [mes_transaccion] tinyint,
   [id_subcategoria] varchar(30),
-  [tipo_transaccionn] varchar(100),
+  [tipo_transaccion] varchar(100),
   [descripcion_movimiento] varchar(300),
   [monto_transaccion] decimal(12,2),
   [fecha_transaccion] date,
@@ -126,9 +126,6 @@ GO
 ALTER TABLE [prespuesto_detalles] ADD FOREIGN KEY ([id_presupuesto]) REFERENCES [presupuestos] ([id_presupuesto])
 GO
 
-ALTER TABLE [prespuesto_detalles] ADD FOREIGN KEY ([id_presupuesto]) REFERENCES [transacciones] ([id_presupuesto_detalle])
-GO
-
 ALTER TABLE [transacciones_obligaciones_fijas] ADD FOREIGN KEY ([id_transaccion]) REFERENCES [transacciones] ([id_transaccion])
 GO
 
@@ -142,4 +139,7 @@ ALTER TABLE [obligaciones_fijas] ADD FOREIGN KEY ([id_subcategoria]) REFERENCES 
 GO
 
 ALTER TABLE [prespuesto_detalles] ADD FOREIGN KEY ([id_subcategoria]) REFERENCES [subcategorias] ([id_subcategoria])
+GO
+
+ALTER TABLE [transacciones] ADD FOREIGN KEY ([id_detalle]) REFERENCES [prespuesto_detalles] ([id_detalle])
 GO
