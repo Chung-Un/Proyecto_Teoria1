@@ -10,8 +10,8 @@ Table usuarios{
   salario_mensual_base decimal(12,2)
   estado_usuario bit
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
   //pata gallo debe quedar con llave foranea
@@ -31,8 +31,8 @@ Table presupuestos{
   fecha_y_hora_creacion datetime2
   estado_presupuesto varchar(100)
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
 }
@@ -45,8 +45,8 @@ Table categorias{
   color_hexademical varchar(7)
   orden_presentacion int
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
 }
@@ -58,8 +58,8 @@ Table subcategorias{
   estado_subcategoria bit
   subcategoria_por_defecto bit
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
 }
@@ -71,8 +71,8 @@ Table prespuesto_detalles{
   monto_mensual decimal(12,2)
   observaciones varchar(500)
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
 }
@@ -87,8 +87,8 @@ Table obligaciones_fijas{
   fecha_inicio date
   fecha_fin date
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
 }
@@ -109,8 +109,8 @@ Table transacciones{
   observaciones varchar(500)
   fecha_y_hora_registro datetime2
 
-  creado_por varchar(30)
-  modificado_por varchar(30)
+  creado_por int
+  modificado_por int
   creado_en datetime2
   modificado_en datetime2
   
