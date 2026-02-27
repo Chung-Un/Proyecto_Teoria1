@@ -8,7 +8,7 @@ Table usuarios{
   segundo_apellido varchar(100)
   fecha_ingreso datetime2
   salario_mensual_base decimal(12,2)
-  estado_usuario bool
+  estado_usuario bit
 
   creado_por varchar(30)
   modificado_por varchar(30)
@@ -55,8 +55,8 @@ Table subcategorias{
   id_subcategoria varchar(30) [primary key]
   id_categoria varchar(30) //fk
   nombre_subcategoria varchar(300)
-  estado_subcategoria bool
-  subcategoria_por_defecto bool
+  estado_subcategoria bit
+  subcategoria_por_defecto bit
 
   creado_por varchar(30)
   modificado_por varchar(30)
@@ -83,7 +83,7 @@ Table obligaciones_fijas{
   nombre_obligacion varchar(300)
   monto_mensual decimal(12,2)
   dia_vencimiento tinyint
-  estado_vigente bool
+  estado_vigente bit
   fecha_inicio date
   fecha_fin date
 
@@ -96,11 +96,11 @@ Table obligaciones_fijas{
 Table transacciones{
   id_transaccion varchar(30) [primary key]
   id_usuario varchar(30)
-  id_presupuesto_detalle varchar(30)
+  id_detalle varchar(30)
   anio_transaccion smallint
   mes_transaccion tinyint
   id_subcategoria varchar(30)
-  tipo_transaccionn varchar(100)
+  tipo_transaccion varchar(100)
   descripcion_movimiento varchar(300)
   monto_transaccion decimal(12,2)
   fecha_transaccion date
@@ -128,7 +128,6 @@ Ref: "usuarios"."id_usuario" < "presupuestos"."id_usuario"
 
 Ref: "presupuestos"."id_presupuesto" < "prespuesto_detalles"."id_presupuesto"
 
-Ref: "transacciones"."id_presupuesto_detalle" < "prespuesto_detalles"."id_presupuesto"
 
 
 Ref: "transacciones"."id_transaccion" < "transacciones_obligaciones_fijas"."id_transaccion"
@@ -146,3 +145,7 @@ Ref: "categorias"."id_categoria" < "subcategorias"."id_categoria"
 Ref: "subcategorias"."id_subcategoria" < "obligaciones_fijas"."id_subcategoria"
 
 Ref: "subcategorias"."id_subcategoria" < "prespuesto_detalles"."id_subcategoria"
+
+
+
+Ref: "prespuesto_detalles"."id_detalle" < "transacciones"."id_detalle"
