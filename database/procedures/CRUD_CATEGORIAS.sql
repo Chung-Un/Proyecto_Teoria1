@@ -40,36 +40,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE sp_eliminar_categoria
-    @p_id_categoria int,
-    @p_modificado_por int
-AS
-BEGIN
-    IF EXISTS(
-        SELECT 1 
-        FROM subcategorias 
-        WHERE id_categoria = @p_id_categoria 
-        AND estado_subcategoria = 1 
-        AND subcategoria_por_defecto = 0
-    )BEGIN
-        RAISERROR('Error: tiene subcategoria existente',16,1); --severidad,donde ocurrio
-        RETURN;
-     END
-
-    UPDATE categorias 
-    SET 
-        modificado_por = @p_modificado_por,
-        modificado_en = SYSDATETIME()
-    WHERE id_categoria = @p_id_categoria;
-
-    UPDATE subcategorias
-    SET 
-        estado_subcategoria = 0,
-        modificado_por = @p_modificado_por,
-        modificado_en = SYSDATETIME()
-    WHERE id_categoria = @p_id_categoria;
-END;
-GO
+--falta eliminar
 
 CREATE OR ALTER PROCEDURE sp_consultar_categoria
     @p_id_categoria INT
