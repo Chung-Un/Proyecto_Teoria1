@@ -40,10 +40,33 @@ BEGIN
 END;
 GO
 
---falta eliminar
+CREATE OR ALTER PROCEDURE sp_eliminar_categoria
+    @p_id_categoria int,
+    @p_modificado_por int
+AS
+BEGIN
+    DECLARE @total_subcategorias int;
+
+    SELECT @total_subcategorias = COUNT(*)
+    FROM subcategorias
+    WHERE id_categoria = @p_id_categoria;
+
+    BEGIN
+    IF 
+        @total_subcategorias >=1
+        RAISERROR('Elimine las subcategorias existentes antes de eliminar la categoria ',16,1);
+        RETURN;
+    END 
+
+    DELETE
+    FROM categorias
+    WHERE id_categoria = @p_id_categoria;
+    
+END;
+GO
 
 CREATE OR ALTER PROCEDURE sp_consultar_categoria
-    @p_id_categoria INT
+    @p_id_categoria int
 AS
 BEGIN
     SELECT 
