@@ -36,6 +36,8 @@ BEGIN
         SYSDATETIME(),
         @p_id_usuario
     );
+
+    set @p_id_usuario = SCOPE_IDENTITY();
 END;
 GO
 
