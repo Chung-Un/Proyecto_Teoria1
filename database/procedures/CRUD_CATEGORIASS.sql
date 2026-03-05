@@ -61,6 +61,12 @@ BEGIN
     DELETE
     FROM categorias
     WHERE id_categoria = @p_id_categoria;
+
+    UPDATE categorias
+    SET 
+        modificado_por = @p_modificado_por,
+        modificado_en = SYSDATETIME()
+    WHERE id_categoria = @p_id_categoria;
     
 END;
 GO
