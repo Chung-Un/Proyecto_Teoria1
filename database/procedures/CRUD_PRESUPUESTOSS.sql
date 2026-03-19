@@ -5,7 +5,8 @@ CREATE OR ALTER PROCEDURE sp_insertar_presupuesto
     @p_mes_inicio tinyint,
     @p_mes_fin tinyint,
     @p_anio_fin smallint,
-    @p_descripcion_presupuesto varchar(500)
+    @p_descripcion_presupuesto varchar(500),
+    @p_id_presupuesto int OUTPUT
 AS
 BEGIN
     INSERT INTO presupuestos(
@@ -36,9 +37,8 @@ BEGIN
         SYSDATETIME(),
         @p_id_usuario
     );
-
-    set @p_id_usuario = SCOPE_IDENTITY();
-END;
+    SET @p_id_presupuesto = SCOPE_IDENTITY();
+END
 GO
 
 CREATE OR ALTER PROCEDURE sp_actualizar_presupuesto
