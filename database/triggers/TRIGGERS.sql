@@ -16,7 +16,7 @@ begin
 
     select
      i.id_categoria,
-        'Default',      
+        'General',      
         1,              
         1,             
         i.creado_por,
