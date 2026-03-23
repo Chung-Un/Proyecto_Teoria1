@@ -62,70 +62,80 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE sp_registrar_transaccion_completa
-@p_id_usuario int,
-@p_id_presupuesto int,
-@p_anio smallint,
-@p_mes tinyint,
-@p_id_subcategoria int,
-@p_tipo_transaccion varchar(100),
-@p_descripcion_movimiento varchar(300),
-@p_monto_transaccion decimal(12,2),
-@p_fecha_transaccion date,
-@p_metodo_pago varchar(100),
-@p_creado_por int
+    @p_id_usuario             int,
+    @p_id_presupuesto         int,
+    @p_anio                   smallint,
+    @p_mes                    tinyint,
+    @p_id_subcategoria        int,
+    @p_tipo_transaccion       varchar(100),
+    @p_descripcion_movimiento varchar(300),
+    @p_monto_transaccion      decimal(12,2),
+    @p_fecha_transaccion      date,
+    @p_metodo_pago            varchar(100),
+    @p_creado_por             int
 AS 
 BEGIN
     declare @anio_inicio smallint;
-    declare @mes_inicio tinyint;
-    declare @anio_fin smallint;
-    declare @mes_fin tinyint;
-    declare @id_detalle int;
+    declare @mes_inicio  tinyint;
+    declare @anio_fin    smallint;
+    declare @mes_fin     tinyint;
+    declare @id_detalle  int;
 
     select
-    @anio_inicio = p.anio_inicio,
-    @mes_inicio = p.mes_inicio,
-    @anio_fin = p.anio_fin,
-    @mes_fin = p.mes_fin
+        @anio_inicio = p.anio_inicio,
+        @mes_inicio  = p.mes_inicio,
+        @anio_fin    = p.anio_fin,
+        @mes_fin     = p.mes_fin
     from presupuestos p 
-    where p.id_presupuesto = @p_id_presupuesto
-    AND p.estado_presupuesto =1;
+    where p.id_presupuesto   = @p_id_presupuesto
+      AND p.estado_presupuesto = 'activo';  
 
     if @anio_inicio is null
     begin
-        raiserror('El presupuesto no existe o no esta activo', 16,1);
+        raiserror('El presupuesto no existe o no esta activo', 16, 1);
         return;
     end
 
-    if @p_anio <=0 or (@p_mes <=0 or @p_mes>12)
+    if @p_anio <= 0 or (@p_mes <= 0 or @p_mes > 12)
     begin 
-        raiserror('Fecha ingresada no valida',16,1);
+        raiserror('Fecha ingresada no valida', 16, 1);
         return;
     end
 
-    if(@p_anio < @anio_inicio or @p_anio > @anio_fin) 
+    if @p_anio < @anio_inicio or @p_anio > @anio_fin
     begin 
-    raiserror('La transaccion no esta dentro del rango valido para el presupuesto',16,1);
-    return;
+        raiserror('La transaccion no esta dentro del rango valido para el presupuesto', 16, 1);
+        return;
+    end
+
+    select @id_detalle = pd.id_detalle
+    from prespuesto_detalles pd
+    where pd.id_presupuesto  = @p_id_presupuesto
+      and pd.id_subcategoria = @p_id_subcategoria;
+
+    if @id_detalle is null
+    begin
+        raiserror('La subcategoria no esta en los detalles del presupuesto', 16, 1);
+        return;
     end
 
     EXEC sp_insertar_transaccion
-        @p_id_usuario= @p_id_usuario,
-        @p_id_presupuesto= @p_id_presupuesto,
-        @p_id_detalle= @id_detalle,
-        @p_anio_transaccion= @p_anio,
-        @p_mes_transaccion= @p_mes,
-        @p_id_subcategoria= @p_id_subcategoria,
-        @p_id_obligacion= NULL,
-        @p_tipo_transaccion= @p_tipo_transaccion,
-        @p_descripcion_movimiento= @p_descripcion_movimiento,
-        @p_monto_transaccion= @p_monto_transaccion,
-        @p_fecha_transaccion= @p_fecha_transaccion,
-        @p_metodo_pago= @p_metodo_pago,
-        @p_numero_factura= NULL,
-        @p_observaciones= NULL,
-        @p_creado_por= @p_creado_por;
-
-END;
+        @p_id_usuario             = @p_id_usuario,
+        @p_id_presupuesto         = @p_id_presupuesto,
+        @p_id_detalle             = @id_detalle,
+        @p_anio_transaccion       = @p_anio,
+        @p_mes_transaccion        = @p_mes,
+        @p_id_subcategoria        = @p_id_subcategoria,
+        @p_id_obligacion          = NULL,
+        @p_tipo_transaccion       = @p_tipo_transaccion,
+        @p_descripcion_movimiento = @p_descripcion_movimiento,
+        @p_monto_transaccion      = @p_monto_transaccion,
+        @p_fecha_transaccion      = @p_fecha_transaccion,
+        @p_metodo_pago            = @p_metodo_pago,
+        @p_numero_factura         = NULL,
+        @p_observaciones          = NULL,
+        @p_creado_por             = @p_creado_por;
+END
 GO
 
 CREATE OR ALTER PROCEDURE sp_procesar_obligaciones_mes

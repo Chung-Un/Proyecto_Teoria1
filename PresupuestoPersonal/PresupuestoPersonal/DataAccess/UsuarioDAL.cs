@@ -99,5 +99,34 @@ namespace PresupuestoPersonal.DataAccess
             }
             return lista;
         }
+
+        public static Usuario Login(string correo, string password)
+        {
+            using SqlConnection conexion = Conexion.ObtenerConexion();
+            using SqlCommand cmd = new SqlCommand("sp_login_usuario", conexion);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@p_correo", correo);
+            cmd.Parameters.AddWithValue("@p_password", password);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new Usuario
+                {
+                    IdUsuario = reader.GetInt32(reader.GetOrdinal("id_usuario")),
+                    Password = reader.GetString(reader.GetOrdinal("password")),
+                    CorreoElectronico = reader.GetString(reader.GetOrdinal("correo_electronico")),
+                    PrimerNombre = reader.GetString(reader.GetOrdinal("primer_nombre")),
+                    SegundoNombre = reader.GetString(reader.GetOrdinal("segundo_nombre")),
+                    PrimerApellido = reader.GetString(reader.GetOrdinal("primer_apellido")),
+                    SegundoApellido = reader.GetString(reader.GetOrdinal("segundo_apellido")),
+                    FechaIngreso = reader.GetDateTime(reader.GetOrdinal("fecha_ingreso")),
+                    SalarioMensualBase = reader.GetDecimal(reader.GetOrdinal("salario_mensual_base")),
+                    EstadoUsuario = reader.GetBoolean(reader.GetOrdinal("estado_usuario"))
+                };
+            }
+            return null;
+        }
     }
 }

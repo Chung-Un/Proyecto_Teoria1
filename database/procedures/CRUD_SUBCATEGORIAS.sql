@@ -110,8 +110,7 @@ BEGIN
         s.modificado_en,
         s.modificado_por
     FROM subcategorias s
-    INNER JOIN categorias c ON
-    s.id_categoria = @p_id_categoria;
-
-END;
+    WHERE s.id_categoria    = @p_id_categoria
+      AND s.estado_subcategoria = 1;  
+END
 GO

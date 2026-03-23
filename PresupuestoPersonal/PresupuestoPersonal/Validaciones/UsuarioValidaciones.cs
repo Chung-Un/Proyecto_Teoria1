@@ -67,15 +67,10 @@ namespace PresupuestoPersonal.Validaciones
             if (string.IsNullOrEmpty(password))
                 throw new Exception("Contrasena es obligatorio");
 
-            List<Usuario> usuarios = UsuarioDAL.Listar();
-            Usuario user = usuarios.FirstOrDefault(u =>
-                u.CorreoElectronico == correo &&
-                u.Password == password);
+            Usuario user = UsuarioDAL.Login(correo, password);  
 
             if (user == null)
                 throw new Exception("Correo o contrasena incorrecto.");
-            if (!user.EstadoUsuario)
-                throw new Exception("Usuario inactivo.");
 
             return user;
         }

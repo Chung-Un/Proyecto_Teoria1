@@ -65,6 +65,11 @@ namespace PresupuestoPersonal.Validaciones
             return PresupuestoDAL.ListarPorUsuario(idUsuario, estado);
         }
 
+        public static List<Presupuesto> ListarTodos(string estado)
+        {
+            return PresupuestoDAL.ListarTodos(estado);
+        }
+
         public static void CrearCompleto(Presupuesto p, string descripcion, string listaJson, int creadoPor)
         {
             if (string.IsNullOrEmpty(p.NombrePresupuesto))

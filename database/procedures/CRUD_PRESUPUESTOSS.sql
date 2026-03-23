@@ -106,6 +106,7 @@ BEGIN
        p.mes_inicio,
        p.total_ingresos_planificados,
        p.total_gastos_planificados,
+       p.total_ahorro_planificado,      
        p.fecha_y_hora_creacion,
        p.estado_presupuesto,
        p.creado_por,
@@ -114,32 +115,57 @@ BEGIN
        p.modificado_en
     FROM presupuestos p
     WHERE p.id_presupuesto = @p_id_presupuesto
-        
-END;
+END
 GO
 
 CREATE OR ALTER PROCEDURE sp_listar_presupuestos_usuario
-    @p_id_usuario INT,
-    @p_estado bit
+    @p_id_usuario int,
+    @p_estado     varchar(100) = NULL
 AS
 BEGIN
     SELECT
-       p.id_presupuesto,
-       p.nombre_presupuesto,
-       p.anio_inicio,
-       p.anio_fin,
-       p.mes_fin,
-       p.mes_inicio,
-       p.total_ingresos_planificados,
-       p.total_gastos_planificados,
-       p.fecha_y_hora_creacion,
-       p.estado_presupuesto,
-       p.creado_por,
-       p.modificado_por,
-       p.creado_en,
-       p.modificado_en
+        p.id_presupuesto,
+        p.nombre_presupuesto,
+        p.anio_inicio,
+        p.anio_fin,
+        p.mes_fin,
+        p.mes_inicio,
+        p.total_ingresos_planificados,
+        p.total_gastos_planificados,
+        p.total_ahorro_planificado,     
+        p.fecha_y_hora_creacion,
+        p.estado_presupuesto,
+        p.creado_por,
+        p.modificado_por,
+        p.creado_en,
+        p.modificado_en
     FROM presupuestos p
     WHERE p.id_usuario = @p_id_usuario
-    AND p.estado_presupuesto = @p_estado
-END;
+      AND (@p_estado IS NULL OR p.estado_presupuesto = @p_estado);
+END
+GO
+
+CREATE OR ALTER PROCEDURE sp_listar_todos_presupuestos
+    @p_estado varchar(100) = NULL
+AS
+BEGIN
+    SELECT
+        p.id_presupuesto,
+        p.nombre_presupuesto,
+        p.anio_inicio,
+        p.anio_fin,
+        p.mes_fin,
+        p.mes_inicio,
+        p.total_ingresos_planificados,
+        p.total_gastos_planificados,
+        p.total_ahorro_planificado,
+        p.fecha_y_hora_creacion,
+        p.estado_presupuesto,
+        p.creado_por,
+        p.modificado_por,
+        p.creado_en,
+        p.modificado_en
+    FROM presupuestos p
+    WHERE (@p_estado IS NULL OR p.estado_presupuesto = @p_estado);
+END
 GO

@@ -5,7 +5,7 @@ namespace PresupuestoPersonal.DataAccess
     public class Conexion
     {
         private static string connectionString =
-            "Server=localhost\\SQLEXPRESS;Database=PresupuestoPersonal;Integrates Security=True;TrustServerCertificate=True;";
+            "Server=localhost\\SQLEXPRESS;Database=PresupuestoPersonal;Integrated Security=True;TrustServerCertificate=True;";
 
         public static SqlConnection ObtenerConexion()
         {

@@ -90,7 +90,40 @@ namespace PresupuestoPersonal.DataAccess
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-            cmd.Parameters.AddWithValue("@p_estado", estado);
+            cmd.Parameters.AddWithValue("@p_estado", string.IsNullOrEmpty(estado)
+                                                          ? (object)DBNull.Value
+                                                          : estado); 
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                lista.Add(new Presupuesto
+                {
+                    IdPresupuesto = reader.GetInt32(reader.GetOrdinal("id_presupuesto")),
+                    NombrePresupuesto = reader.GetString(reader.GetOrdinal("nombre_presupuesto")),
+                    AnioInicio = reader.GetInt16(reader.GetOrdinal("anio_inicio")),
+                    MesInicio = reader.GetByte(reader.GetOrdinal("mes_inicio")),
+                    AnioFin = reader.GetInt16(reader.GetOrdinal("anio_fin")),
+                    MesFin = reader.GetByte(reader.GetOrdinal("mes_fin")),
+                    TotalIngresosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
+                    TotalGastosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
+                    TotalAhorroPlanificado = reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
+                    EstadoPresupuesto = reader.GetString(reader.GetOrdinal("estado_presupuesto"))
+                });
+            }
+            return lista;
+        }
+
+        public static List<Presupuesto> ListarTodos(string estado)
+        {
+            List<Presupuesto> lista = new List<Presupuesto>();
+
+            using SqlConnection conexion = Conexion.ObtenerConexion();
+            using SqlCommand cmd = new SqlCommand("sp_listar_todos_presupuestos", conexion);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@p_estado", string.IsNullOrEmpty(estado)
+                                                      ? (object)DBNull.Value
+                                                      : estado);
 
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())

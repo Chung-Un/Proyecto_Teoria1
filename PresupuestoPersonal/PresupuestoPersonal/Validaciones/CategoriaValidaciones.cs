@@ -12,19 +12,19 @@ namespace PresupuestoPersonal.Validaciones
             if (string.IsNullOrEmpty(cat.TipoCategoria))
                 throw new Exception("Tipo de categoria es obligatorio.");
             if (cat.TipoCategoria != "ingreso" && cat.TipoCategoria != "gasto" && cat.TipoCategoria != "ahorro")
-                throw new Exception("Tipo de categoria debe ser ingreso, gasto o ahorro.");
+                throw new Exception("Tipo debe ser ingreso, gasto o ahorro.");
 
             CategoriaDAL.Insertar(cat);
         }
 
-        public static void Actualizar(Categoria cat)
+        public static void Actualizar(Categoria cat, int modificadoPor)
         {
             if (cat.IdCategoria <= 0)
                 throw new Exception("ID de categoria no valido.");
             if (string.IsNullOrEmpty(cat.NombreCategoria))
                 throw new Exception("Nombre de categoria es obligatorio.");
 
-            CategoriaDAL.Actualizar(cat);
+            CategoriaDAL.Actualizar(cat, modificadoPor);
         }
 
         public static void Eliminar(int idCategoria, int modificadoPor)

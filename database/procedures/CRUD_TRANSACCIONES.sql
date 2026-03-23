@@ -127,13 +127,14 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_listar_transacciones_presupuestos
-    @p_id_presupuesto INT,
-    @p_anio_transaccion smallint,
-    @p_mes tinyint,
-    @p_tipo_transaccion varchar(100)
+    @p_id_presupuesto    int,
+    @p_anio_transaccion  smallint,
+    @p_mes               tinyint,
+    @p_tipo_transaccion  varchar(100)
 AS
 BEGIN
     SELECT DISTINCT 
+        t.id_transaccion,       
         t.id_usuario,
         t.id_detalle,
         t.anio_transaccion,
@@ -152,12 +153,12 @@ BEGIN
         t.creado_en,
         t.modificado_en
     FROM transacciones t
-    INNER JOIN prespuesto_detalles pd ON
-    t.id_detalle = pd.id_detalle
-    INNER JOIN subcategorias s ON
-    t.id_subcategoria = s.id_subcategoria
-    INNER JOIN categorias c ON
-    s.id_categoria = c.id_categoria
+    INNER JOIN prespuesto_detalles pd ON t.id_detalle = pd.id_detalle
+    INNER JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
+    INNER JOIN categorias c ON s.id_categoria = c.id_categoria
     WHERE pd.id_presupuesto = @p_id_presupuesto
-END;
+      AND t.anio_transaccion = @p_anio_transaccion
+      AND t.mes_transaccion  = @p_mes
+      AND (@p_tipo_transaccion IS NULL OR t.tipo_transaccion = @p_tipo_transaccion)
+END
 GO

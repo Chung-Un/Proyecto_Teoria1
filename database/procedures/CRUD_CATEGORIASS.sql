@@ -1,8 +1,8 @@
 CREATE OR ALTER PROCEDURE sp_insertar_categoria
     @p_nombre_categoria varchar(300),
-    @p_tipo_categoria varchar(100),
-    @p_id_usuario int,
-    @p_creado_por int
+    @p_tipo_categoria   varchar(100),
+    @p_id_usuario       int,
+    @p_creado_por       int
 AS
 BEGIN
     INSERT INTO categorias(
@@ -13,7 +13,6 @@ BEGIN
         creado_en,
         modificado_en
     )
-    OUTPUT inserted.id_categoria, inserted.nombre_categoria
     VALUES(
         @p_nombre_categoria,
         @p_tipo_categoria,
@@ -22,7 +21,7 @@ BEGIN
         SYSDATETIME(),
         SYSDATETIME()
     );
-END;
+END
 GO
 
 CREATE OR ALTER PROCEDURE sp_actualizar_categoria
@@ -41,34 +40,29 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_eliminar_categoria
-    @p_id_categoria int,
+    @p_id_categoria   int,
     @p_modificado_por int
 AS
 BEGIN
-    DECLARE @total_subcategorias int;
+    DECLARE @total_activas int;
 
-    SELECT @total_subcategorias = COUNT(*)
+    SELECT @total_activas = COUNT(*)
     FROM subcategorias
-    WHERE id_categoria = @p_id_categoria;
+    WHERE id_categoria        = @p_id_categoria
+      AND estado_subcategoria = 1;
 
+    IF @total_activas >= 1
     BEGIN
-    IF 
-        @total_subcategorias >=1
-        RAISERROR('Elimine las subcategorias existentes antes de eliminar la categoria ',16,1);
+        RAISERROR('Elimine las subcategorias activas antes de eliminar la categoria', 16, 1);
         RETURN;
-    END 
+    END
 
-    DELETE
-    FROM categorias
+    DELETE FROM subcategorias
     WHERE id_categoria = @p_id_categoria;
 
-    UPDATE categorias
-    SET 
-        modificado_por = @p_modificado_por,
-        modificado_en = SYSDATETIME()
+    DELETE FROM categorias
     WHERE id_categoria = @p_id_categoria;
-    
-END;
+END
 GO
 
 CREATE OR ALTER PROCEDURE sp_consultar_categoria

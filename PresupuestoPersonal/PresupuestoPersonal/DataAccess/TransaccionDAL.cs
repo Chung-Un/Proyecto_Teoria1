@@ -113,7 +113,9 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_id_presupuesto", idPresupuesto);
             cmd.Parameters.AddWithValue("@p_anio_transaccion", anio);
             cmd.Parameters.AddWithValue("@p_mes", mes);
-            cmd.Parameters.AddWithValue("@p_tipo_transaccion", tipo ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_tipo_transaccion", string.IsNullOrEmpty(tipo)
+                                                    ? (object)DBNull.Value
+                                                    : tipo);
 
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
