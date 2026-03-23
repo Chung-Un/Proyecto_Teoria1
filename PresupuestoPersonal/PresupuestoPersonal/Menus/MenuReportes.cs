@@ -1,8 +1,9 @@
 ﻿using PresupuestoPersonal.Models;
+using PresupuestoPersonal.Reportes;
 
 namespace PresupuestoPersonal.Menus
 {
-    public class MenuPrincipal
+    public class MenuReportes
     {
         public static void Mostrar(Usuario usuario)
         {
@@ -11,18 +12,11 @@ namespace PresupuestoPersonal.Menus
             {
                 Console.Clear();
                 Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║         MENU PRINCIPAL            ║");
-                Console.WriteLine($"║  Usuario: {usuario.PrimerNombre,-22}║");
+                Console.WriteLine("║          MENU REPORTES            ║");
                 Console.WriteLine("╚══════════════════════════════════╝");
                 Console.WriteLine();
-                Console.WriteLine("1. Usuarios");
-                Console.WriteLine("2. Categorias");
-                Console.WriteLine("3. Subcategorias");
-                Console.WriteLine("4. Presupuestos");
-                Console.WriteLine("5. Transacciones");
-                Console.WriteLine("6. Obligaciones fijas");
-                Console.WriteLine("7. Reportes pdf");
-                Console.WriteLine("0. Cerrar Sesion");
+                Console.WriteLine("1. Reporte 1 - Resumen Mensual");
+                Console.WriteLine("0. Volver");
                 Console.WriteLine();
                 Console.Write("Seleccione una opcion: ");
 
@@ -33,25 +27,7 @@ namespace PresupuestoPersonal.Menus
                     switch (opcion)
                     {
                         case "1":
-                            MenuUsuarios.Mostrar(usuario);
-                            break;
-                        case "2":
-                            MenuCategorias.Mostrar(usuario);
-                            break;
-                        case "3":
-                            MenuSubcategorias.Mostrar(usuario);
-                            break;
-                        case "4":
-                            MenuPresupuestos.Mostrar(usuario);
-                            break;
-                        case "5":
-                            MenuTransacciones.Mostrar(usuario);
-                            break;
-                        case "6":
-                            MenuObligaciones.Mostrar(usuario);
-                            break;
-                        case "7":
-                            MenuReportes.Mostrar(usuario);
+                            GenerarReporte1(usuario);
                             break;
                         case "0":
                             salir = true;
@@ -69,6 +45,31 @@ namespace PresupuestoPersonal.Menus
                     Console.ReadKey();
                 }
             }
+        }
+
+        private static void GenerarReporte1(Usuario usuario)
+        {
+            Console.Clear();
+            Console.WriteLine("╔══════════════════════════════════╗");
+            Console.WriteLine("║    REPORTE 1 - RESUMEN MENSUAL    ║");
+            Console.WriteLine("╚══════════════════════════════════╝");
+            Console.WriteLine();
+
+            Console.Write("Anio inicio:       ");
+            short anioInicio = short.Parse(Console.ReadLine());
+
+            Console.Write("Mes inicio (1-12): ");
+            byte mesInicio = byte.Parse(Console.ReadLine());
+
+            Console.Write("Anio fin:          ");
+            short anioFin = short.Parse(Console.ReadLine());
+
+            Console.Write("Mes fin (1-12):    ");
+            byte mesFin = byte.Parse(Console.ReadLine());
+
+            string nombreUsuario = $"{usuario.PrimerNombre} {usuario.PrimerApellido}";
+
+            ReporteResumenMensual.Generar(usuario.IdUsuario, nombreUsuario, anioInicio, mesInicio, anioFin, mesFin);
         }
     }
 }
