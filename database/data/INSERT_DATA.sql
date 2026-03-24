@@ -14,7 +14,7 @@ VALUES
 GO
  
 
--Categorias
+--Categorias
 -- TIPO: ingreso
 INSERT INTO categorias (nombre_categoria, tipo_categoria, nombre_icono, color_hexademical, orden_presentacion, creado_por, modificado_por, creado_en, modificado_en)
 VALUES

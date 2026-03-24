@@ -98,8 +98,7 @@ begin
 		c.color_hexademical,
 		c.orden_presentacion
 	from categorias c
-	where c.estado_categoria = 1
-	  and (@p_tipo is null or c.tipo_categoria = @p_tipo)
+	where (@p_tipo is null or c.tipo_categoria = @p_tipo)
 	order by c.tipo_categoria, c.nombre_categoria;
 end
 go
