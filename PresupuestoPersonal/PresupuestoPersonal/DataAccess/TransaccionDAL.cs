@@ -90,12 +90,8 @@ namespace PresupuestoPersonal.DataAccess
                     MontoTransaccion = reader.GetDecimal(reader.GetOrdinal("monto_transaccion")),
                     FechaTransaccion = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("fecha_transaccion"))),
                     MetodoPago = reader.GetString(reader.GetOrdinal("metodo_pago")),
-                    NumeroFactura = reader.IsDBNull(reader.GetOrdinal("numero_factura"))
-                                           ? null
-                                           : reader.GetInt32(reader.GetOrdinal("numero_factura")),
-                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))
-                                           ? null
-                                           : reader.GetString(reader.GetOrdinal("observaciones")),
+                    NumeroFactura = reader.IsDBNull(reader.GetOrdinal("numero_factura"))? null: reader.GetInt32(reader.GetOrdinal("numero_factura")),
+                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))? null : reader.GetString(reader.GetOrdinal("observaciones")),
                     FechaYHoraRegistro = reader.GetDateTime(reader.GetOrdinal("fecha_y_hora_registro"))
                 };
             }
@@ -133,12 +129,8 @@ namespace PresupuestoPersonal.DataAccess
                     MontoTransaccion = reader.GetDecimal(reader.GetOrdinal("monto_transaccion")),
                     FechaTransaccion = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("fecha_transaccion"))),
                     MetodoPago = reader.GetString(reader.GetOrdinal("metodo_pago")),
-                    NumeroFactura = reader.IsDBNull(reader.GetOrdinal("numero_factura"))
-                                            ? null
-                                            : reader.GetInt32(reader.GetOrdinal("numero_factura")),
-                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))
-                                            ? null
-                                            : reader.GetString(reader.GetOrdinal("observaciones")),
+                    NumeroFactura = reader.IsDBNull(reader.GetOrdinal("numero_factura"))? null: reader.GetInt32(reader.GetOrdinal("numero_factura")),
+                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))? null: reader.GetString(reader.GetOrdinal("observaciones")),
                     FechaYHoraRegistro = reader.GetDateTime(reader.GetOrdinal("fecha_y_hora_registro"))
                 });
             }

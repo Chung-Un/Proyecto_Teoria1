@@ -13,7 +13,7 @@
         public decimal MontoTransaccion { get; set; }
         public DateOnly FechaTransaccion { get; set; }
         public string MetodoPago { get; set; }
-        public int? NumeroFactura { get; set; }      // nullable, es opcional
+        public int? NumeroFactura { get; set; }     
         public string Observaciones { get; set; }
         public DateTime FechaYHoraRegistro { get; set; }
     }

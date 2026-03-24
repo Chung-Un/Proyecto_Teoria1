@@ -53,7 +53,7 @@ namespace PresupuestoPersonal.DataAccess
         public static Usuario Consultar(int idUsuario)
         {
             using SqlConnection conexion = Conexion.ObtenerConexion();
-            using SqlCommand cmd = new SqlCommand("sp_consultar_usuario", conexion);  // ✅ corregido
+            using SqlCommand cmd = new SqlCommand("sp_consultar_usuario", conexion);  
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);

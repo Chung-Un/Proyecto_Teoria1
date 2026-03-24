@@ -63,9 +63,7 @@ namespace PresupuestoPersonal.DataAccess
                     IdPresupuesto = reader.GetInt32(reader.GetOrdinal("id_presupuesto")),
                     IdSubcategoria = reader.GetInt32(reader.GetOrdinal("id_subcategoria")),
                     MontoMensual = reader.GetDecimal(reader.GetOrdinal("monto_mensual")),
-                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))
-                                     ? null
-                                     : reader.GetString(reader.GetOrdinal("observaciones"))
+                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))? null: reader.GetString(reader.GetOrdinal("observaciones"))
                 };
             }
             return null;
@@ -90,9 +88,7 @@ namespace PresupuestoPersonal.DataAccess
                     IdPresupuesto = reader.GetInt32(reader.GetOrdinal("id_presupuesto")),
                     IdSubcategoria = reader.GetInt32(reader.GetOrdinal("id_subcategoria")),
                     MontoMensual = reader.GetDecimal(reader.GetOrdinal("monto_mensual")),
-                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))
-                                     ? null
-                                     : reader.GetString(reader.GetOrdinal("observaciones"))
+                    Observaciones = reader.IsDBNull(reader.GetOrdinal("observaciones"))? null: reader.GetString(reader.GetOrdinal("observaciones"))
                 });
             }
             return lista;

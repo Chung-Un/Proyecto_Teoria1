@@ -60,15 +60,9 @@ namespace PresupuestoPersonal.DataAccess
                     IdCategoria = reader.GetInt32(reader.GetOrdinal("id_categoria")),
                     NombreCategoria = reader.GetString(reader.GetOrdinal("nombre_categoria")),
                     TipoCategoria = reader.GetString(reader.GetOrdinal("tipo_categoria")),
-                    NombreIcono = reader.IsDBNull(reader.GetOrdinal("nombre_icono"))
-                                        ? null
-                                        : reader.GetString(reader.GetOrdinal("nombre_icono")),
-                    ColorHexadecimal = reader.IsDBNull(reader.GetOrdinal("color_hexademical"))
-                                        ? null
-                                        : reader.GetString(reader.GetOrdinal("color_hexademical")),
-                    OrdenPresentacion = reader.IsDBNull(reader.GetOrdinal("orden_presentacion"))
-                                        ? 0
-                                        : reader.GetInt32(reader.GetOrdinal("orden_presentacion"))
+                    NombreIcono = reader.IsDBNull(reader.GetOrdinal("nombre_icono"))? null: reader.GetString(reader.GetOrdinal("nombre_icono")),
+                    ColorHexadecimal = reader.IsDBNull(reader.GetOrdinal("color_hexademical"))? null: reader.GetString(reader.GetOrdinal("color_hexademical")),
+                    OrdenPresentacion = reader.IsDBNull(reader.GetOrdinal("orden_presentacion")) ? 0: reader.GetInt32(reader.GetOrdinal("orden_presentacion"))
                 };
             }
             return null;
@@ -93,15 +87,9 @@ namespace PresupuestoPersonal.DataAccess
                     IdCategoria = reader.GetInt32(reader.GetOrdinal("id_categoria")),
                     NombreCategoria = reader.GetString(reader.GetOrdinal("nombre_categoria")),
                     TipoCategoria = reader.GetString(reader.GetOrdinal("tipo_categoria")),
-                    NombreIcono = reader.IsDBNull(reader.GetOrdinal("nombre_icono"))
-                                        ? null
-                                        : reader.GetString(reader.GetOrdinal("nombre_icono")),
-                    ColorHexadecimal = reader.IsDBNull(reader.GetOrdinal("color_hexademical"))
-                                        ? null
-                                        : reader.GetString(reader.GetOrdinal("color_hexademical")),
-                    OrdenPresentacion = reader.IsDBNull(reader.GetOrdinal("orden_presentacion"))
-                                        ? 0
-                                        : reader.GetInt32(reader.GetOrdinal("orden_presentacion"))
+                    NombreIcono = reader.IsDBNull(reader.GetOrdinal("nombre_icono"))? null: reader.GetString(reader.GetOrdinal("nombre_icono")),
+                    ColorHexadecimal = reader.IsDBNull(reader.GetOrdinal("color_hexademical"))? null: reader.GetString(reader.GetOrdinal("color_hexademical")),
+                    OrdenPresentacion = reader.IsDBNull(reader.GetOrdinal("orden_presentacion"))? 0: reader.GetInt32(reader.GetOrdinal("orden_presentacion"))
                 });
             }
             return lista;

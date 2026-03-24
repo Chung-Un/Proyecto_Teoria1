@@ -9,7 +9,7 @@
         public byte DiaVencimiento { get; set; }
         public bool EstadoVigente { get; set; }
         public DateOnly FechaInicio { get; set; }
-        public DateOnly? FechaFin { get; set; }  // nullable porque puede ser indefinida
+        public DateOnly? FechaFin { get; set; }  
     }
 }
 
