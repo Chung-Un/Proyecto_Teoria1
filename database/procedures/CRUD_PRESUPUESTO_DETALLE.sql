@@ -1,9 +1,9 @@
 CREATE OR ALTER PROCEDURE sp_insertar_presupuesto_detalle
 	@p_id_presupuesto  int,
 	@p_id_subcategoria int,
-	@p_monto_mensual   decimal(12,2),
-	@p_observaciones   varchar(500) = null,
-	@p_creado_por      int
+	@p_monto_mensual decimal(12,2),
+	@p_observaciones varchar(500) = null,
+	@p_creado_por int
 as
 begin
 	insert into prespuesto_detalles(
@@ -26,26 +26,32 @@ end
 go
 
 CREATE OR ALTER PROCEDURE sp_actualizar_presupuesto_detalle
-	@p_id_detalle     int,
-	@p_monto_mensual  decimal(12,2),
-	@p_observaciones  varchar(500),
+	@p_id_detalle int,
+	@p_monto_mensual decimal(12,2),
+	@p_observaciones varchar(500),
 	@p_modificado_por int
 as
 begin
 	update prespuesto_detalles set
-		monto_mensual  = @p_monto_mensual,
-		observaciones  = @p_observaciones,
-		modificado_por = @p_modificado_por,
-		modificado_en  = getdate()
+		monto_mensual= @p_monto_mensual,
+		observaciones= @p_observaciones,
+		modificado_por= @p_modificado_por,
+		modificado_en= getdate()
 	where id_detalle = @p_id_detalle;
 end
 go
 
 CREATE OR ALTER PROCEDURE sp_eliminar_presupuesto_detalle
-	@p_id_detalle     int,
+	@p_id_detalle int,
 	@p_modificado_por int
 as
 begin
+	if exists (select 1 from transacciones where id_detalle = @p_id_detalle)
+	begin
+		raiserror('No se puede eliminar el detalle porque tiene transacciones asociadas.', 16, 1);
+		return;
+	end
+
 	delete from prespuesto_detalles
 	where id_detalle = @p_id_detalle;
 end

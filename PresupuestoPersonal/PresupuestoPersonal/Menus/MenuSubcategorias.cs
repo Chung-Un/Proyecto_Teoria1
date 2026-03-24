@@ -1,4 +1,5 @@
-﻿using PresupuestoPersonal.Models;
+﻿using PresupuestoPersonal.DataAccess;
+using PresupuestoPersonal.Models;
 using PresupuestoPersonal.Validaciones;
 
 namespace PresupuestoPersonal.Menus
@@ -130,8 +131,15 @@ namespace PresupuestoPersonal.Menus
 
             Subcategoria nueva = new Subcategoria();
 
+            Console.WriteLine("--- CATEGORIAS ---");
+            List<Categoria> categorias = CategoriaDAL.Listar(usuario.IdUsuario, null);
+            Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Tipo",-10}");
+            Console.WriteLine(new string('-', 42));
+            foreach (Categoria c in categorias)
+                Console.WriteLine($"{c.IdCategoria,-5} {c.NombreCategoria,-25} {c.TipoCategoria,-10}");
+            Console.WriteLine();
             Console.Write("ID de la categoria: ");
-            nueva.IdCategoria = int.Parse(Console.ReadLine());
+            int idCategoria = int.Parse(Console.ReadLine());
 
             Console.Write("Nombre:             ");
             nueva.NombreSubcategoria = Console.ReadLine();

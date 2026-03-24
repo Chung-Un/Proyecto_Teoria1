@@ -4,6 +4,8 @@ namespace PresupuestoPersonal.Menus
 {
     public class MenuPrincipal
     {
+        private static bool EsAdmin(Usuario usuario) => usuario.Password == "ADMIN@2026!";
+
         public static void Mostrar(Usuario usuario)
         {
             bool salir = false;
@@ -15,7 +17,10 @@ namespace PresupuestoPersonal.Menus
                 Console.WriteLine($"║  Usuario: {usuario.PrimerNombre,-22}║");
                 Console.WriteLine("╚══════════════════════════════════╝");
                 Console.WriteLine();
+
+                
                 Console.WriteLine("1. Usuarios");
+
                 Console.WriteLine("2. Categorias");
                 Console.WriteLine("3. Subcategorias");
                 Console.WriteLine("4. Presupuestos");
@@ -33,7 +38,11 @@ namespace PresupuestoPersonal.Menus
                     switch (opcion)
                     {
                         case "1":
-                            MenuUsuarios.Mostrar(usuario);
+                            if (EsAdmin(usuario))
+                                MenuUsuarios.Mostrar(usuario);
+                            else
+                                Console.WriteLine("Acceso denegado. Solo el administrador puede acceder a esto");
+                            Console.ReadKey();
                             break;
                         case "2":
                             MenuCategorias.Mostrar(usuario);

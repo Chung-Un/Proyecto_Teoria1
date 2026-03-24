@@ -1,8 +1,8 @@
 CREATE OR ALTER PROCEDURE sp_insertar_categoria
     @p_nombre_categoria varchar(300),
     @p_tipo_categoria   varchar(100),
-    @p_id_usuario       int,
-    @p_creado_por       int
+    @p_id_usuario int,
+    @p_creado_por int
 AS
 BEGIN
     INSERT INTO categorias(
@@ -86,17 +86,20 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_listar_categorias
-    @p_id_usuario INT,
-    @p_tipo VARCHAR(100)
-AS
-BEGIN
-    SELECT 
-        c.id_categoria,
-        c.nombre_categoria,
-        c.tipo_categoria,
-        c.nombre_icono,
-        c.color_hexademical,
-        c.orden_presentacion
-    FROM categorias c
-END;
-GO
+	@p_id_usuario int,
+	@p_tipo varchar(100) = null
+as
+begin
+	select
+		c.id_categoria,
+		c.nombre_categoria,
+		c.tipo_categoria,
+		c.nombre_icono,
+		c.color_hexademical,
+		c.orden_presentacion
+	from categorias c
+	where c.estado_categoria = 1
+	  and (@p_tipo is null or c.tipo_categoria = @p_tipo)
+	order by c.tipo_categoria, c.nombre_categoria;
+end
+go

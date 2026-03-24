@@ -1,4 +1,5 @@
-﻿using PresupuestoPersonal.Models;
+﻿using PresupuestoPersonal.DataAccess;
+using PresupuestoPersonal.Models;
 using PresupuestoPersonal.Validaciones;
 
 namespace PresupuestoPersonal.Menus
@@ -70,8 +71,14 @@ namespace PresupuestoPersonal.Menus
             }
             else
             {
-                Console.WriteLine($"{"ID",-5} {"ID Subcategoria",-18} {"Monto Mensual",-15} {"Observaciones",-20}");
-                Console.WriteLine(new string('-', 62));
+                Console.WriteLine($"{"ID",-5} {"ID Sub",-10} {"Monto Mensual",-16} {"Observaciones",-30}");
+                Console.WriteLine(new string('-', 65));
+                foreach (PresupuestoDetalle pd in detalles)
+                {
+                    string obs = pd.Observaciones ?? "-";
+                    if (obs.Length > 28) obs = obs.Substring(0, 25) + "...";
+                    Console.WriteLine($"{pd.IdDetalle,-5} {pd.IdSubcategoria,-10} L.{pd.MontoMensual,-14:N2} {obs,-30}");
+                }
                 foreach (PresupuestoDetalle pd in detalles)
                     Console.WriteLine($"{pd.IdDetalle,-5} {pd.IdSubcategoria,-18} L.{pd.MontoMensual,-14:N2} {pd.Observaciones ?? "-",-20}");
             }
@@ -110,19 +117,40 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║         INSERTAR DETALLE          ║");
+            Console.WriteLine("║         INSERTAR DETALLE         ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
             PresupuestoDetalle nuevo = new PresupuestoDetalle();
 
-            Console.Write("ID del presupuesto:  ");
+            Console.Write("ID del presupuesto: ");
             nuevo.IdPresupuesto = int.Parse(Console.ReadLine());
 
-            Console.Write("ID de subcategoria:  ");
+            Console.WriteLine();
+            Console.WriteLine("--- CATEGORIAS DISPONIBLES ---");
+            List<Categoria> categorias = CategoriaDAL.Listar(usuario.IdUsuario, null);
+            Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Tipo",-10}");
+            Console.WriteLine(new string('-', 42));
+            foreach (Categoria c in categorias)
+                Console.WriteLine($"{c.IdCategoria,-5} {c.NombreCategoria,-25} {c.TipoCategoria,-10}");
+
+            Console.WriteLine();
+            Console.Write("ID de la categoria: ");
+            int idCategoria = int.Parse(Console.ReadLine());
+
+            Console.WriteLine();
+            Console.WriteLine("--- SUBCATEGORIAS DISPONIBLES ---");
+            List<Subcategoria> subcategorias = SubcategoriaDAL.ListarPorCategoria(idCategoria);
+            Console.WriteLine($"{"ID",-5} {"Nombre",-25}");
+            Console.WriteLine(new string('-', 32));
+            foreach (Subcategoria s in subcategorias)
+                Console.WriteLine($"{s.IdSubcategoria,-5} {s.NombreSubcategoria,-25}");
+
+            Console.WriteLine();
+            Console.Write("ID de subcategoria: ");
             nuevo.IdSubcategoria = int.Parse(Console.ReadLine());
 
-            Console.Write("Monto mensual:       ");
+            Console.Write("Monto mensual:      ");
             nuevo.MontoMensual = decimal.Parse(Console.ReadLine());
 
             Console.Write("Observaciones (Enter para omitir): ");

@@ -76,7 +76,7 @@ BEGIN
     
 UPDATE presupuestos
 SET
-    estado_presupuesto= 0,
+    estado_presupuesto= 'cerrado',
     modificado_por = @p_modificado_por,
     modificado_en = SYSDATETIME()
 WHERE id_presupuesto = @p_id_presupuesto
@@ -85,29 +85,29 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_consultar_presupuesto
-    @p_id_presupuesto int
-AS
-BEGIN 
-    SELECT
-       p.id_presupuesto,
-       p.nombre_presupuesto,
-       p.anio_inicio,
-       p.anio_fin,
-       p.mes_fin,
-       p.mes_inicio,
-       p.total_ingresos_planificados,
-       p.total_gastos_planificados,
-       p.total_ahorro_planificado,      
-       p.fecha_y_hora_creacion,
-       p.estado_presupuesto,
-       p.creado_por,
-       p.modificado_por,
-       p.creado_en,
-       p.modificado_en
-    FROM presupuestos p
-    WHERE p.id_presupuesto = @p_id_presupuesto
-END
-GO
+	@p_id_presupuesto int
+as
+begin
+	select
+		p.id_presupuesto,
+		p.nombre_presupuesto,
+		p.anio_inicio,
+		p.anio_fin,
+		p.mes_fin,
+		p.mes_inicio,
+		isnull(p.total_ingresos_planificados, 0) as total_ingresos_planificados,
+		isnull(p.total_gastos_planificados, 0) as total_gastos_planificados,
+		isnull(p.total_ahorro_planificado, 0) as total_ahorro_planificado,
+		isnull(p.fecha_y_hora_creacion, p.creado_en) as fecha_y_hora_creacion,
+		p.estado_presupuesto,
+		p.creado_por,
+		isnull(p.modificado_por, p.creado_por)   as modificado_por,
+		p.creado_en,
+		p.modificado_en
+	from presupuestos p
+	where p.id_presupuesto = @p_id_presupuesto;
+end
+go
 
 CREATE OR ALTER PROCEDURE sp_listar_presupuestos_usuario
     @p_id_usuario int,

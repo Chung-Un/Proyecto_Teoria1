@@ -12,7 +12,7 @@ namespace PresupuestoPersonal.Menus
             {
                 Console.Clear();
                 Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║           MENU USUARIOS           ║");
+                Console.WriteLine("║           MENU USUARIOS          ║");
                 Console.WriteLine("╚══════════════════════════════════╝");
                 Console.WriteLine();
                 Console.WriteLine("1. Listar usuarios");

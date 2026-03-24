@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using PresupuestoPersonal.Models;
+using ScottPlot.Colormaps;
 
 namespace PresupuestoPersonal.DataAccess
 {
