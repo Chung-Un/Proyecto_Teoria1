@@ -13,8 +13,8 @@ namespace PresupuestoPersonal.Menus
             {
                 Console.Clear();
                 Console.WriteLine("╔══════════════════════════════════╗");
-                Console.WriteLine("║         MENU PRINCIPAL            ║");
-                Console.WriteLine($"║  Usuario: {usuario.PrimerNombre,-22}║");
+                Console.WriteLine("║         MENU PRINCIPAL           ║");
+                Console.WriteLine($"║Usuario: {usuario.PrimerNombre,-22}║");
                 Console.WriteLine("╚══════════════════════════════════╝");
                 Console.WriteLine();
 
