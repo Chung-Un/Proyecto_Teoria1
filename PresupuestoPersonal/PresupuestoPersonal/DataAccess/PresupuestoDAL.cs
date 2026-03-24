@@ -5,7 +5,7 @@ namespace PresupuestoPersonal.DataAccess
 {
     public class PresupuestoDAL
     {
-        public static void Insertar(Presupuesto p, string descripcion)
+        public static void Insertar(Presupuesto p)
         {
             using SqlConnection conexion = Conexion.ObtenerConexion();
             using SqlCommand cmd = new SqlCommand("sp_insertar_presupuesto", conexion);
@@ -17,12 +17,15 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_mes_inicio", p.MesInicio);
             cmd.Parameters.AddWithValue("@p_mes_fin", p.MesFin);
             cmd.Parameters.AddWithValue("@p_anio_fin", p.AnioFin);
-            cmd.Parameters.AddWithValue("@p_descripcion_presupuesto", descripcion);
+
+            SqlParameter pId = new SqlParameter("@p_id_presupuesto", System.Data.SqlDbType.Int);
+            pId.Direction = System.Data.ParameterDirection.Output;
+            cmd.Parameters.Add(pId);
 
             cmd.ExecuteNonQuery();
         }
 
-        public static void Actualizar(Presupuesto p, string descripcion, int modificadoPor)
+        public static void Actualizar(Presupuesto p, int modificadoPor)
         {
             using SqlConnection conexion = Conexion.ObtenerConexion();
             using SqlCommand cmd = new SqlCommand("sp_actualizar_presupuesto", conexion);
@@ -30,7 +33,6 @@ namespace PresupuestoPersonal.DataAccess
 
             cmd.Parameters.AddWithValue("@p_id_presupuesto", p.IdPresupuesto);
             cmd.Parameters.AddWithValue("@p_nombre_presupuesto", p.NombrePresupuesto);
-            cmd.Parameters.AddWithValue("@p_descripcion_presupuesto", descripcion);
             cmd.Parameters.AddWithValue("@p_anio_inicio", p.AnioInicio);
             cmd.Parameters.AddWithValue("@p_mes_inicio", p.MesInicio);
             cmd.Parameters.AddWithValue("@p_mes_fin", p.MesFin);
@@ -71,16 +73,18 @@ namespace PresupuestoPersonal.DataAccess
                     MesInicio = reader.GetByte(reader.GetOrdinal("mes_inicio")),
                     AnioFin = reader.GetInt16(reader.GetOrdinal("anio_fin")),
                     MesFin = reader.GetByte(reader.GetOrdinal("mes_fin")),
-                    TotalIngresosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
-                    TotalGastosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
-                    TotalAhorroPlanificado = reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
+                    TotalIngresosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_ingresos_planificados"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
+                    TotalGastosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_gastos_planificados"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
+                    TotalAhorroPlanificado = reader.IsDBNull(reader.GetOrdinal("total_ahorro_planificado"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
                     FechaYHoraCreacion = reader.GetDateTime(reader.GetOrdinal("fecha_y_hora_creacion")),
                     EstadoPresupuesto = reader.GetString(reader.GetOrdinal("estado_presupuesto"))
                 };
             }
             return null;
         }
-
         public static List<Presupuesto> ListarPorUsuario(int idUsuario, string estado)
         {
             List<Presupuesto> lista = new List<Presupuesto>();
@@ -92,7 +96,8 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
             cmd.Parameters.AddWithValue("@p_estado", string.IsNullOrEmpty(estado)
                                                           ? (object)DBNull.Value
-                                                          : estado); 
+                                                          : estado);
+
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -104,9 +109,12 @@ namespace PresupuestoPersonal.DataAccess
                     MesInicio = reader.GetByte(reader.GetOrdinal("mes_inicio")),
                     AnioFin = reader.GetInt16(reader.GetOrdinal("anio_fin")),
                     MesFin = reader.GetByte(reader.GetOrdinal("mes_fin")),
-                    TotalIngresosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
-                    TotalGastosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
-                    TotalAhorroPlanificado = reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
+                    TotalIngresosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_ingresos_planificados"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
+                    TotalGastosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_gastos_planificados"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
+                    TotalAhorroPlanificado = reader.IsDBNull(reader.GetOrdinal("total_ahorro_planificado"))
+                                                    ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
                     EstadoPresupuesto = reader.GetString(reader.GetOrdinal("estado_presupuesto"))
                 });
             }
@@ -136,16 +144,19 @@ namespace PresupuestoPersonal.DataAccess
                     MesInicio = reader.GetByte(reader.GetOrdinal("mes_inicio")),
                     AnioFin = reader.GetInt16(reader.GetOrdinal("anio_fin")),
                     MesFin = reader.GetByte(reader.GetOrdinal("mes_fin")),
-                    TotalIngresosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
-                    TotalGastosPlanificados = reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
-                    TotalAhorroPlanificado = reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
+                    TotalIngresosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_ingresos_planificados"))
+                                            ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ingresos_planificados")),
+                    TotalGastosPlanificados = reader.IsDBNull(reader.GetOrdinal("total_gastos_planificados"))
+                                            ? 0 : reader.GetDecimal(reader.GetOrdinal("total_gastos_planificados")),
+                    TotalAhorroPlanificado = reader.IsDBNull(reader.GetOrdinal("total_ahorro_planificado"))
+                                            ? 0 : reader.GetDecimal(reader.GetOrdinal("total_ahorro_planificado")),
                     EstadoPresupuesto = reader.GetString(reader.GetOrdinal("estado_presupuesto"))
                 });
             }
             return lista;
         }
 
-        public static void CrearCompleto(Presupuesto p, string descripcion, string listaSubcategoriasJson, int creadoPor)
+        public static void CrearCompleto(Presupuesto p, string listaSubcategoriasJson, int creadoPor)
         {
             using SqlConnection conexion = Conexion.ObtenerConexion();
             using SqlCommand cmd = new SqlCommand("sp_crear_presupuesto_completo", conexion);
@@ -153,7 +164,6 @@ namespace PresupuestoPersonal.DataAccess
 
             cmd.Parameters.AddWithValue("@p_id_usuario", p.IdUsuario);
             cmd.Parameters.AddWithValue("@p_nombre_presupuesto", p.NombrePresupuesto);
-            cmd.Parameters.AddWithValue("@p_descripcion_presupuesto", descripcion);
             cmd.Parameters.AddWithValue("@p_anio_inicio", p.AnioInicio);
             cmd.Parameters.AddWithValue("@p_mes_inicio", p.MesInicio);
             cmd.Parameters.AddWithValue("@p_anio_fin", p.AnioFin);
@@ -174,7 +184,6 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_id_presupuesto", idPresupuesto);
             cmd.Parameters.AddWithValue("@p_modificado_por", modificadoPor);
 
-            
             SqlParameter pIngresos = new SqlParameter("@p_total_ingresos", System.Data.SqlDbType.Decimal);
             SqlParameter pGastos = new SqlParameter("@p_total_gastos", System.Data.SqlDbType.Decimal);
             SqlParameter pAhorros = new SqlParameter("@p_total_ahorros", System.Data.SqlDbType.Decimal);

@@ -5,7 +5,7 @@ namespace PresupuestoPersonal.Validaciones
 {
     public class PresupuestoValidaciones
     {
-        public static void Insertar(Presupuesto p, string descripcion)
+        public static void Insertar(Presupuesto p)
         {
             if (string.IsNullOrEmpty(p.NombrePresupuesto))
                 throw new Exception("Nombre de presupuesto es obligatorio.");
@@ -20,10 +20,10 @@ namespace PresupuestoPersonal.Validaciones
             if (p.AnioFin == p.AnioInicio && p.MesFin < p.MesInicio)
                 throw new Exception("Mes de fin debe ser mayor o igual al mes de inicio.");
 
-            PresupuestoDAL.Insertar(p, descripcion);
+            PresupuestoDAL.Insertar(p);
         }
 
-        public static void Actualizar(Presupuesto p, string descripcion, int modificadoPor)
+        public static void Actualizar(Presupuesto p, int modificadoPor)
         {
             if (p.IdPresupuesto <= 0)
                 throw new Exception("ID de presupuesto no valido.");
@@ -34,7 +34,7 @@ namespace PresupuestoPersonal.Validaciones
             if (p.AnioFin == p.AnioInicio && p.MesFin < p.MesInicio)
                 throw new Exception("Mes de fin debe ser mayor o igual al mes de inicio.");
 
-            PresupuestoDAL.Actualizar(p, descripcion, modificadoPor);
+            PresupuestoDAL.Actualizar(p, modificadoPor);
         }
 
         public static void Eliminar(int idPresupuesto, int modificadoPor)
@@ -70,7 +70,7 @@ namespace PresupuestoPersonal.Validaciones
             return PresupuestoDAL.ListarTodos(estado);
         }
 
-        public static void CrearCompleto(Presupuesto p, string descripcion, string listaJson, int creadoPor)
+        public static void CrearCompleto(Presupuesto p, string listaJson, int creadoPor)
         {
             if (string.IsNullOrEmpty(p.NombrePresupuesto))
                 throw new Exception("Nombre de presupuesto es obligatorio.");
@@ -81,7 +81,7 @@ namespace PresupuestoPersonal.Validaciones
             if (p.AnioFin == p.AnioInicio && p.MesFin < p.MesInicio)
                 throw new Exception("Mes de fin debe ser mayor o igual al mes de inicio.");
 
-            PresupuestoDAL.CrearCompleto(p, descripcion, listaJson, creadoPor);
+            PresupuestoDAL.CrearCompleto(p, listaJson, creadoPor);
         }
 
         public static void Cerrar(int idPresupuesto, int modificadoPor,

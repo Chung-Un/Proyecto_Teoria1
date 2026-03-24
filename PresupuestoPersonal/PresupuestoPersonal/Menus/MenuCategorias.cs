@@ -30,24 +30,12 @@ namespace PresupuestoPersonal.Menus
                 {
                     switch (opcion)
                     {
-                        case "1":
-                            Listar(usuario);
-                            break;
-                        case "2":
-                            Consultar();
-                            break;
-                        case "3":
-                            Insertar(usuario);
-                            break;
-                        case "4":
-                            Actualizar(usuario);
-                            break;
-                        case "5":
-                            Eliminar(usuario);
-                            break;
-                        case "0":
-                            salir = true;
-                            break;
+                        case "1": Listar(usuario); break;
+                        case "2": Consultar(); break;
+                        case "3": Insertar(usuario); break;
+                        case "4": Actualizar(usuario); break;
+                        case "5": Eliminar(usuario); break;
+                        case "0": salir = true; break;
                         default:
                             Console.WriteLine("Opcion no valida.");
                             Console.ReadKey();
@@ -70,7 +58,7 @@ namespace PresupuestoPersonal.Menus
             Console.WriteLine("║        LISTA DE CATEGORIAS        ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
-            Console.WriteLine("Filtrar por tipo (ingreso/gasto/ahorro) o Enter para todas: ");
+            Console.Write("Filtrar por tipo (ingreso/gasto/ahorro) o Enter para todas: ");
             string tipo = Console.ReadLine();
 
             List<Categoria> categorias = CategoriaValidaciones.Listar(usuario.IdUsuario, tipo);
@@ -81,12 +69,10 @@ namespace PresupuestoPersonal.Menus
             }
             else
             {
-                Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Tipo",-10} {"Orden",-6}");
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Tipo",-10}");
+                Console.WriteLine(new string('-', 42));
                 foreach (Categoria c in categorias)
-                {
-                    Console.WriteLine($"{c.IdCategoria,-5} {c.NombreCategoria,-25} {c.TipoCategoria,-10} {c.OrdenPresentacion,-6}");
-                }
+                    Console.WriteLine($"{c.IdCategoria,-5} {c.NombreCategoria,-25} {c.TipoCategoria,-10}");
             }
 
             Console.WriteLine();
@@ -108,12 +94,9 @@ namespace PresupuestoPersonal.Menus
             Categoria c = CategoriaValidaciones.Leer(id);
 
             Console.WriteLine();
-            Console.WriteLine($"ID:               {c.IdCategoria}");
-            Console.WriteLine($"Nombre:           {c.NombreCategoria}");
-            Console.WriteLine($"Tipo:             {c.TipoCategoria}");
-            Console.WriteLine($"Icono:            {c.NombreIcono}");
-            Console.WriteLine($"Color:            {c.ColorHexadecimal}");
-            Console.WriteLine($"Orden:            {c.OrdenPresentacion}");
+            Console.WriteLine($"ID:     {c.IdCategoria}");
+            Console.WriteLine($"Nombre: {c.NombreCategoria}");
+            Console.WriteLine($"Tipo:   {c.TipoCategoria}");
 
             Console.WriteLine();
             Console.WriteLine("Presione cualquier tecla para continuar...");
@@ -136,7 +119,7 @@ namespace PresupuestoPersonal.Menus
             Console.Write("Tipo (ingreso/gasto/ahorro): ");
             nueva.TipoCategoria = Console.ReadLine();
 
-            CategoriaValidaciones.Insertar(nueva);  
+            CategoriaValidaciones.Insertar(nueva);
 
             Console.WriteLine("\nCategoria insertada correctamente.");
             Console.WriteLine("(El trigger creo automaticamente la subcategoria General)");
@@ -165,18 +148,6 @@ namespace PresupuestoPersonal.Menus
             string nombre = Console.ReadLine();
             if (!string.IsNullOrEmpty(nombre)) c.NombreCategoria = nombre;
 
-            Console.Write($"Icono [{c.NombreIcono}]: ");
-            string icono = Console.ReadLine();
-            if (!string.IsNullOrEmpty(icono)) c.NombreIcono = icono;
-
-            Console.Write($"Color [{c.ColorHexadecimal}]: ");
-            string color = Console.ReadLine();
-            if (!string.IsNullOrEmpty(color)) c.ColorHexadecimal = color;
-
-            Console.Write($"Orden [{c.OrdenPresentacion}]: ");
-            string orden = Console.ReadLine();
-            if (!string.IsNullOrEmpty(orden)) c.OrdenPresentacion = int.Parse(orden);
-
             CategoriaValidaciones.Actualizar(c, usuario.IdUsuario);
 
             Console.WriteLine("\nCategoria actualizada correctamente.");
@@ -197,7 +168,7 @@ namespace PresupuestoPersonal.Menus
 
             Categoria c = CategoriaValidaciones.Leer(id);
 
-            Console.WriteLine($"\nEsta seguro que desea eliminar '{c.NombreCategoria}'? (s/n): ");
+            Console.Write($"\nEsta seguro que desea eliminar '{c.NombreCategoria}'? (s/n): ");
             string confirmacion = Console.ReadLine();
 
             if (confirmacion.ToLower() == "s")

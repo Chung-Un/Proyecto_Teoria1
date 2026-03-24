@@ -1,66 +1,64 @@
 CREATE OR ALTER PROCEDURE sp_crear_presupuesto_completo
-    @p_id_usuario int,
-    @p_nombre_presupuesto varchar(300),
-    @p_descripcion_presupuesto varchar(500),
-    @p_anio_inicio smallint,
-    @p_mes_inicio tinyint,
-    @p_anio_fin smallint,
-    @p_mes_fin tinyint,
-    @p_lista_subcategorias_json nvarchar(MAX),
-    @p_creado_por int
-AS
-BEGIN
-    SET NOCOUNT ON;
+	@p_id_usuario int,
+	@p_nombre_presupuesto varchar(300),
+	@p_anio_inicio smallint,
+	@p_mes_inicio tinyint,
+	@p_anio_fin smallint,
+	@p_mes_fin  tinyint,
+	@p_lista_subcategorias_json nvarchar(MAX),
+	@p_creado_por int
+as
+begin
+	set nocount on;
 
-    DECLARE @total_items int;
-    DECLARE @index int = 0;
-    DECLARE @id_subcategoria int;
-    DECLARE @monto_mensual decimal(12,2);
-    DECLARE @id_presupuesto int;
+	declare @total_items int;
+	declare @index int = 0;
+	declare @id_subcategoria int;
+	declare @monto_mensual decimal(12,2);
+	declare @id_presupuesto int;
 
-    BEGIN TRANSACTION
-    BEGIN TRY
+	begin transaction
+	begin try
 
-        EXEC sp_insertar_presupuesto
-            @p_id_usuario= @p_id_usuario,
-            @p_nombre_presupuesto= @p_nombre_presupuesto,
-            @p_anio_inicio= @p_anio_inicio,
-            @p_mes_inicio= @p_mes_inicio,
-            @p_mes_fin= @p_mes_fin,
-            @p_anio_fin= @p_anio_fin,
-            @p_descripcion_presupuesto = @p_descripcion_presupuesto,
-            @p_id_presupuesto= @id_presupuesto OUTPUT;
+		exec sp_insertar_presupuesto
+			@p_id_usuario= @p_id_usuario,
+			@p_nombre_presupuesto = @p_nombre_presupuesto,
+			@p_anio_inicio= @p_anio_inicio,
+			@p_mes_inicio= @p_mes_inicio,
+			@p_mes_fin= @p_mes_fin,
+			@p_anio_fin = @p_anio_fin,
+			@p_id_presupuesto = @id_presupuesto output;
 
-        SELECT @total_items = COUNT(*)
-        FROM OPENJSON(@p_lista_subcategorias_json);
+		select @total_items = count(*)
+		from openjson(@p_lista_subcategorias_json);
 
-        WHILE @index < @total_items
-        BEGIN
-            SELECT 
-                @id_subcategoria = JSON_VALUE(value, '$.id_subcategoria'),
-                @monto_mensual   = JSON_VALUE(value, '$.monto_mensual')
-            FROM OPENJSON(@p_lista_subcategorias_json)
-            WHERE [key] = @index;
+		while @index < @total_items
+		begin
+			select
+				@id_subcategoria = json_value(value, '$.id_subcategoria'),
+				@monto_mensual= json_value(value, '$.monto_mensual')
+			from openjson(@p_lista_subcategorias_json)
+			where [key] = @index;
 
-            EXEC sp_insertar_presupuesto_detalle
-                @p_id_presupuesto  = @id_presupuesto,
-                @p_id_subcategoria = @id_subcategoria,
-                @p_monto_mensual   = @monto_mensual,
-                @p_creado_por      = @p_creado_por;
+			exec sp_insertar_presupuesto_detalle
+				@p_id_presupuesto  = @id_presupuesto,
+				@p_id_subcategoria = @id_subcategoria,
+				@p_monto_mensual= @monto_mensual,
+				@p_observaciones= null,
+				@p_creado_por= @p_creado_por;
 
-            SET @index = @index + 1;
-        END
+			set @index = @index + 1;
+		end
 
-        COMMIT TRANSACTION
+		commit transaction
 
-    END TRY
-    BEGIN CATCH
-        ROLLBACK TRANSACTION
-        THROW
-    END CATCH
-END
-GO
-
+	end try
+	begin catch
+		rollback transaction
+		throw
+	end catch
+end
+go
 CREATE OR ALTER PROCEDURE sp_registrar_transaccion_completa
     @p_id_usuario             int,
     @p_id_presupuesto         int,
@@ -120,28 +118,28 @@ BEGIN
     end
 
     EXEC sp_insertar_transaccion
-        @p_id_usuario             = @p_id_usuario,
-        @p_id_presupuesto         = @p_id_presupuesto,
-        @p_id_detalle             = @id_detalle,
-        @p_anio_transaccion       = @p_anio,
-        @p_mes_transaccion        = @p_mes,
-        @p_id_subcategoria        = @p_id_subcategoria,
-        @p_id_obligacion          = NULL,
-        @p_tipo_transaccion       = @p_tipo_transaccion,
+        @p_id_usuario= @p_id_usuario,
+        @p_id_presupuesto= @p_id_presupuesto,
+        @p_id_detalle= @id_detalle,
+        @p_anio_transaccion = @p_anio,
+        @p_mes_transaccion= @p_mes,
+        @p_id_subcategoria= @p_id_subcategoria,
+        @p_id_obligacion= NULL,
+        @p_tipo_transaccion = @p_tipo_transaccion,
         @p_descripcion_movimiento = @p_descripcion_movimiento,
-        @p_monto_transaccion      = @p_monto_transaccion,
-        @p_fecha_transaccion      = @p_fecha_transaccion,
-        @p_metodo_pago            = @p_metodo_pago,
-        @p_numero_factura         = NULL,
-        @p_observaciones          = NULL,
-        @p_creado_por             = @p_creado_por;
+        @p_monto_transaccion = @p_monto_transaccion,
+        @p_fecha_transaccion= @p_fecha_transaccion,
+        @p_metodo_pago = @p_metodo_pago,
+        @p_numero_factura= NULL,
+        @p_observaciones= NULL,
+        @p_creado_por= @p_creado_por;
 END
 GO
 
 CREATE OR ALTER PROCEDURE sp_procesar_obligaciones_mes
-    @p_id_usuario     int,
-    @p_anio           smallint,
-    @p_mes            tinyint,
+    @p_id_usuario int,
+    @p_anio smallint,
+    @p_mes tinyint,
     @p_id_presupuesto int
 AS
 BEGIN 
@@ -167,9 +165,11 @@ BEGIN
         s.nombre_subcategoria,
         c.nombre_categoria
     FROM obligaciones_fijas obf               
-    INNER JOIN subcategorias s ON obf.id_subcategoria = s.id_subcategoria
-    INNER JOIN categorias    c ON s.id_categoria      = c.id_categoria
-    WHERE obf.creado_por    = @p_id_usuario     
+    INNER JOIN subcategorias s 
+    ON obf.id_subcategoria = s.id_subcategoria
+    INNER JOIN categorias    c 
+    ON s.id_categoria= c.id_categoria
+    WHERE obf.creado_por= @p_id_usuario     
       AND obf.estado_vigente = 1               
       AND obf.fecha_inicio  <= DATEFROMPARTS(@p_anio, @p_mes, 28)  
       AND (
@@ -289,64 +289,62 @@ end;
 go
 
 CREATE OR ALTER PROCEDURE sp_cerrar_presupuesto
-    @p_id_presupuesto int,
-    @p_modificado_por int,
-    @p_total_ingresos decimal(12,2) output,
-    @p_total_gastos decimal(12,2) output,
-    @p_total_ahorros  decimal(12,2) output
+	@p_id_presupuesto int,
+	@p_modificado_por int,
+	@p_total_ingresos decimal(12,2) output,
+	@p_total_gastos   decimal(12,2) output,
+	@p_total_ahorros  decimal(12,2) output
 as
 begin
-    declare @estado bit;
-    declare @anio_fin smallint;
-    declare @mes_fin  tinyint;
+	declare @estado varchar(100);
+	declare @anio_fin smallint;
+	declare @mes_fin  tinyint;
 
-    select
-        @estado = p.estado_presupuesto,
-        @anio_fin = p.anio_fin,
-        @mes_fin  = p.mes_fin
-    from presupuestos p
-    where p.id_presupuesto = @p_id_presupuesto;
+	select
+		@estado   = p.estado_presupuesto,
+		@anio_fin = p.anio_fin,
+		@mes_fin  = p.mes_fin
+	from presupuestos p
+	where p.id_presupuesto = @p_id_presupuesto;
 
-    if @estado is null or @estado != 1
-    begin
-        raiserror('Presupuesto no encontrado o no activo', 16, 1);
-        return;
-    end
+	if @estado is null or @estado != 'activo'
+	begin
+		raiserror('Presupuesto no encontrado o no activo', 16, 1);
+		return;
+	end
 
-    if @anio_fin > year(getdate())
-       or (@anio_fin = year(getdate()) and @mes_fin >= month(getdate()))
-    begin
-        raiserror('El presupuesto aun no ha llegado a su fecha de fin', 16, 1);
-        return;
-    end
+	if @anio_fin > year(getdate())
+	   or (@anio_fin = year(getdate()) and @mes_fin >= month(getdate()))
+	begin
+		raiserror('El presupuesto aun no ha llegado a su fecha de fin', 16, 1);
+		return;
+	end
 
-    select @p_total_ingresos = isnull(sum(t.monto_transaccion), 0)
-    from transacciones t
-    inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle  
-    where pd.id_presupuesto  = @p_id_presupuesto
-      and t.tipo_transaccion = 'ingreso';                              
+	select @p_total_ingresos = isnull(sum(t.monto_transaccion), 0)
+	from transacciones t
+	inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle
+	where pd.id_presupuesto  = @p_id_presupuesto
+	  and t.tipo_transaccion = 'ingreso';
 
-    select @p_total_gastos = isnull(sum(t.monto_transaccion), 0)
-    from transacciones t
-    inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle
-    where pd.id_presupuesto  = @p_id_presupuesto
-      and t.tipo_transaccion = 'gasto';
+	select @p_total_gastos = isnull(sum(t.monto_transaccion), 0)
+	from transacciones t
+	inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle
+	where pd.id_presupuesto  = @p_id_presupuesto
+	  and t.tipo_transaccion = 'gasto';
 
-    select @p_total_ahorros = isnull(sum(t.monto_transaccion), 0)
-    from transacciones t
-    inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle
-    where pd.id_presupuesto  = @p_id_presupuesto
-      and t.tipo_transaccion = 'ahorro';
+	select @p_total_ahorros = isnull(sum(t.monto_transaccion), 0)
+	from transacciones t
+	inner join prespuesto_detalles pd on t.id_detalle = pd.id_detalle
+	where pd.id_presupuesto  = @p_id_presupuesto
+	  and t.tipo_transaccion = 'ahorro';
 
-    update presupuestos
-    set
-        estado_presupuesto = 0,
-        modificado_por= @p_modificado_por,
-        modificado_en = getdate()
-    where id_presupuesto = @p_id_presupuesto;
-
+	update presupuestos set
+		estado_presupuesto = 'cerrado',
+		modificado_por     = @p_modificado_por,
+		modificado_en      = getdate()
+	where id_presupuesto = @p_id_presupuesto;
 end
-GO
+go
 
 
 CREATE OR ALTER PROCEDURE sp_obtener_resumen_categoria_mes

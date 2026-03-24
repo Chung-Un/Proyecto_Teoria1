@@ -11,9 +11,8 @@ namespace PresupuestoPersonal.DataAccess
             using SqlCommand cmd = new SqlCommand("sp_insertar_subcategoria", conexion);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@p_id_subcategoria", sub.IdSubcategoria);
+            cmd.Parameters.AddWithValue("@p_id_categoria", sub.IdCategoria);
             cmd.Parameters.AddWithValue("@p_nombre_subcategoria", sub.NombreSubcategoria);
-            cmd.Parameters.AddWithValue("@p_descripcion", DBNull.Value);
             cmd.Parameters.AddWithValue("@p_es_defecto", sub.SubcategoriaPorDefecto);
             cmd.Parameters.AddWithValue("@p_creado_por", creadoPor);
 
@@ -28,7 +27,6 @@ namespace PresupuestoPersonal.DataAccess
 
             cmd.Parameters.AddWithValue("@p_id_subcategoria", sub.IdSubcategoria);
             cmd.Parameters.AddWithValue("@p_nombre_subcategoria", sub.NombreSubcategoria);
-            cmd.Parameters.AddWithValue("@p_descripcion", DBNull.Value);
             cmd.Parameters.AddWithValue("@p_modificado_por", modificadoPor);
 
             cmd.ExecuteNonQuery();

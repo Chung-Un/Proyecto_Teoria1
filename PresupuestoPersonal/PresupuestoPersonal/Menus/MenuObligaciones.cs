@@ -31,27 +31,13 @@ namespace PresupuestoPersonal.Menus
                 {
                     switch (opcion)
                     {
-                        case "1":
-                            Listar(usuario);
-                            break;
-                        case "2":
-                            Consultar();
-                            break;
-                        case "3":
-                            Insertar(usuario);
-                            break;
-                        case "4":
-                            Actualizar(usuario);
-                            break;
-                        case "5":
-                            Eliminar(usuario);
-                            break;
-                        case "6":
-                            VerObligacionesMes(usuario);
-                            break;
-                        case "0":
-                            salir = true;
-                            break;
+                        case "1": Listar(usuario); break;
+                        case "2": Consultar(); break;
+                        case "3": Insertar(usuario); break;
+                        case "4": Actualizar(usuario); break;
+                        case "5": Eliminar(usuario); break;
+                        case "6": VerObligacionesMes(usuario); break;
+                        case "0": salir = true; break;
                         default:
                             Console.WriteLine("Opcion no valida.");
                             Console.ReadKey();
@@ -86,12 +72,10 @@ namespace PresupuestoPersonal.Menus
             }
             else
             {
-                Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Monto",-12} {"Dia Vence",-10} {"Vigente",-8}");
+                Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Monto",-14} {"Dia Vence",-10} {"Vigente",-8}");
                 Console.WriteLine(new string('-', 65));
                 foreach (ObligacionFija obf in obligaciones)
-                {
-                    Console.WriteLine($"{obf.IdObligacion,-5} {obf.NombreObligacion,-25} L.{obf.MontoMensual,-11:N2} {obf.DiaVencimiento,-10} {(obf.EstadoVigente ? "Si" : "No"),-8}");
-                }
+                    Console.WriteLine($"{obf.IdObligacion,-5} {obf.NombreObligacion,-25} L.{obf.MontoMensual,-12:N2} {obf.DiaVencimiento,-10} {(obf.EstadoVigente ? "Si" : "No"),-8}");
             }
 
             Console.WriteLine();
@@ -113,14 +97,14 @@ namespace PresupuestoPersonal.Menus
             ObligacionFija obf = ObligacionFijaValidaciones.Leer(id);
 
             Console.WriteLine();
-            Console.WriteLine($"ID:               {obf.IdObligacion}");
-            Console.WriteLine($"Nombre:           {obf.NombreObligacion}");
-            Console.WriteLine($"ID Subcategoria:  {obf.IdSubcategoria}");
-            Console.WriteLine($"Monto mensual:    L. {obf.MontoMensual:N2}");
-            Console.WriteLine($"Dia vencimiento:  {obf.DiaVencimiento}");
-            Console.WriteLine($"Fecha inicio:     {obf.FechaInicio}");
-            Console.WriteLine($"Fecha fin:        {obf.FechaFin?.ToString() ?? "Indefinida"}");
-            Console.WriteLine($"Estado vigente:   {(obf.EstadoVigente ? "Activa" : "Inactiva")}");
+            Console.WriteLine($"ID:              {obf.IdObligacion}");
+            Console.WriteLine($"Nombre:          {obf.NombreObligacion}");
+            Console.WriteLine($"ID Subcategoria: {obf.IdSubcategoria}");
+            Console.WriteLine($"Monto mensual:   L. {obf.MontoMensual:N2}");
+            Console.WriteLine($"Dia vencimiento: {obf.DiaVencimiento}");
+            Console.WriteLine($"Fecha inicio:    {obf.FechaInicio}");
+            Console.WriteLine($"Fecha fin:       {obf.FechaFin?.ToString() ?? "Indefinida"}");
+            Console.WriteLine($"Estado vigente:  {(obf.EstadoVigente ? "Activa" : "Inactiva")}");
 
             Console.WriteLine();
             Console.WriteLine("Presione cualquier tecla para continuar...");
@@ -137,13 +121,13 @@ namespace PresupuestoPersonal.Menus
 
             ObligacionFija nueva = new ObligacionFija();
 
-            Console.Write("Nombre:                  ");
+            Console.Write("Nombre:                    ");
             nueva.NombreObligacion = Console.ReadLine();
 
-            Console.Write("ID de subcategoria:      ");
+            Console.Write("ID de subcategoria:        ");
             nueva.IdSubcategoria = int.Parse(Console.ReadLine());
 
-            Console.Write("Monto mensual:           ");
+            Console.Write("Monto mensual:             ");
             nueva.MontoMensual = decimal.Parse(Console.ReadLine());
 
             Console.Write("Dia de vencimiento (1-31): ");
@@ -154,9 +138,7 @@ namespace PresupuestoPersonal.Menus
 
             Console.Write("Fecha fin (dd/MM/yyyy) o Enter si es indefinida: ");
             string fechaFin = Console.ReadLine();
-            nueva.FechaFin = string.IsNullOrEmpty(fechaFin)
-                             ? null
-                             : DateOnly.ParseExact(fechaFin, "dd/MM/yyyy");
+            nueva.FechaFin = string.IsNullOrEmpty(fechaFin) ? null : DateOnly.ParseExact(fechaFin, "dd/MM/yyyy");
 
             nueva.EstadoVigente = true;
 
@@ -224,7 +206,7 @@ namespace PresupuestoPersonal.Menus
 
             ObligacionFija obf = ObligacionFijaValidaciones.Leer(id);
 
-            Console.WriteLine($"\nEsta seguro que desea eliminar '{obf.NombreObligacion}'? (s/n): ");
+            Console.Write($"\nEsta seguro que desea eliminar '{obf.NombreObligacion}'? (s/n): ");
             string confirmacion = Console.ReadLine();
 
             if (confirmacion.ToLower() == "s")
@@ -245,20 +227,19 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║     OBLIGACIONES DEL MES          ║");
+            Console.WriteLine("║       OBLIGACIONES DEL MES        ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
-            Console.Write("Anio: ");
+            Console.Write("Anio:               ");
             short anio = short.Parse(Console.ReadLine());
 
-            Console.Write("Mes (1-12): ");
+            Console.Write("Mes (1-12):         ");
             byte mes = byte.Parse(Console.ReadLine());
 
             Console.Write("ID del presupuesto: ");
             int idPresupuesto = int.Parse(Console.ReadLine());
 
-            // Llamar al SP sp_procesar_obligaciones_mes
             using Microsoft.Data.SqlClient.SqlConnection conexion = DataAccess.Conexion.ObtenerConexion();
             using Microsoft.Data.SqlClient.SqlCommand cmd = new("sp_procesar_obligaciones_mes", conexion);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -271,8 +252,8 @@ namespace PresupuestoPersonal.Menus
             using Microsoft.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader();
 
             Console.WriteLine();
-            Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Monto",-12} {"Vence",-10} {"Dias",-8} {"Pagada",-8}");
-            Console.WriteLine(new string('-', 72));
+            Console.WriteLine($"{"ID",-5} {"Nombre",-25} {"Monto",-14} {"Vence",-12} {"Dias",-10} {"Pagada",-8}");
+            Console.WriteLine(new string('-', 76));
 
             bool hayDatos = false;
             while (reader.Read())
@@ -288,9 +269,9 @@ namespace PresupuestoPersonal.Menus
                 string estadoPago = yaPagada ? "Si" : "No";
                 string alertaDias = diasParaVencer < 0 ? "VENCIDA"
                                   : diasParaVencer <= 3 ? "URGENTE"
-                                  : diasParaVencer.ToString();
+                                  : $"{diasParaVencer} dias";
 
-                Console.WriteLine($"{idObligacion,-5} {nombre,-25} L.{monto,-11:N2} {fechaVence:dd/MM/yyyy,-10} {alertaDias,-8} {estadoPago,-8}");
+                Console.WriteLine($"{idObligacion,-5} {nombre,-25} L.{monto,-12:N2} {fechaVence:dd/MM/yyyy,-12} {alertaDias,-10} {estadoPago,-8}");
             }
 
             if (!hayDatos)

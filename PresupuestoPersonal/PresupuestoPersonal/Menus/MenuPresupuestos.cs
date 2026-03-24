@@ -32,30 +32,14 @@ namespace PresupuestoPersonal.Menus
                 {
                     switch (opcion)
                     {
-                        case "1":
-                            Listar(usuario);
-                            break;
-                        case "2":
-                            Consultar();
-                            break;
-                        case "3":
-                            CrearCompleto(usuario);
-                            break;
-                        case "4":
-                            Actualizar(usuario);
-                            break;
-                        case "5":
-                            Cerrar(usuario);
-                            break;
-                        case "6":
-                            Eliminar(usuario);
-                            break;
-                        case "7":
-                            MenuPresupuestoDetalles.Mostrar(usuario);
-                            break;
-                        case "0":
-                            salir = true;
-                            break;
+                        case "1": Listar(usuario); break;
+                        case "2": Consultar(); break;
+                        case "3": CrearCompleto(usuario); break;
+                        case "4": Actualizar(usuario); break;
+                        case "5": Cerrar(usuario); break;
+                        case "6": Eliminar(usuario); break;
+                        case "7": MenuPresupuestoDetalles.Mostrar(usuario); break;
+                        case "0": salir = true; break;
                         default:
                             Console.WriteLine("Opcion no valida.");
                             Console.ReadKey();
@@ -84,7 +68,7 @@ namespace PresupuestoPersonal.Menus
             List<Presupuesto> presupuestos;
 
             if (usuario.Password == "ADMIN@2026!")
-                presupuestos = PresupuestoValidaciones.ListarTodos(estado);  // ✅ admin ve todos
+                presupuestos = PresupuestoValidaciones.ListarTodos(estado);
             else
                 presupuestos = PresupuestoValidaciones.ListarPorUsuario(usuario.IdUsuario, estado);
 
@@ -108,6 +92,7 @@ namespace PresupuestoPersonal.Menus
             Console.WriteLine("Presione cualquier tecla para continuar...");
             Console.ReadKey();
         }
+
         private static void Consultar()
         {
             Console.Clear();
@@ -150,9 +135,6 @@ namespace PresupuestoPersonal.Menus
             Console.Write("Nombre del presupuesto: ");
             nuevo.NombrePresupuesto = Console.ReadLine();
 
-            Console.Write("Descripcion:            ");
-            string descripcion = Console.ReadLine();
-
             Console.Write("Anio inicio:            ");
             nuevo.AnioInicio = short.Parse(Console.ReadLine());
 
@@ -165,7 +147,6 @@ namespace PresupuestoPersonal.Menus
             Console.Write("Mes fin (1-12):         ");
             nuevo.MesFin = byte.Parse(Console.ReadLine());
 
-            // Construir JSON de subcategorias
             List<string> items = new List<string>();
             bool agregarMas = true;
 
@@ -186,7 +167,7 @@ namespace PresupuestoPersonal.Menus
 
             string json = $"[{string.Join(",", items)}]";
 
-            PresupuestoValidaciones.CrearCompleto(nuevo, descripcion, json, usuario.IdUsuario);
+            PresupuestoValidaciones.CrearCompleto(nuevo, json, usuario.IdUsuario);
 
             Console.WriteLine("\nPresupuesto creado correctamente.");
             Console.WriteLine("Presione cualquier tecla para continuar...");
@@ -214,9 +195,6 @@ namespace PresupuestoPersonal.Menus
             string nombre = Console.ReadLine();
             if (!string.IsNullOrEmpty(nombre)) p.NombrePresupuesto = nombre;
 
-            Console.Write("Descripcion: ");
-            string descripcion = Console.ReadLine();
-
             Console.Write($"Anio inicio [{p.AnioInicio}]: ");
             string anioInicio = Console.ReadLine();
             if (!string.IsNullOrEmpty(anioInicio)) p.AnioInicio = short.Parse(anioInicio);
@@ -233,7 +211,7 @@ namespace PresupuestoPersonal.Menus
             string mesFin = Console.ReadLine();
             if (!string.IsNullOrEmpty(mesFin)) p.MesFin = byte.Parse(mesFin);
 
-            PresupuestoValidaciones.Actualizar(p, descripcion, usuario.IdUsuario);
+            PresupuestoValidaciones.Actualizar(p, usuario.IdUsuario);
 
             Console.WriteLine("\nPresupuesto actualizado correctamente.");
             Console.WriteLine("Presione cualquier tecla para continuar...");
@@ -253,7 +231,7 @@ namespace PresupuestoPersonal.Menus
 
             Presupuesto p = PresupuestoValidaciones.Leer(id);
 
-            Console.WriteLine($"\nEsta seguro que desea cerrar '{p.NombrePresupuesto}'? (s/n): ");
+            Console.Write($"\nEsta seguro que desea cerrar '{p.NombrePresupuesto}'? (s/n): ");
             string confirmacion = Console.ReadLine();
 
             if (confirmacion.ToLower() == "s")
@@ -265,10 +243,10 @@ namespace PresupuestoPersonal.Menus
 
                 Console.WriteLine("\nPresupuesto cerrado correctamente.");
                 Console.WriteLine("\n--- RESUMEN FINAL ---");
-                Console.WriteLine($"Total ingresos:  L. {totalIngresos:N2}");
-                Console.WriteLine($"Total gastos:    L. {totalGastos:N2}");
-                Console.WriteLine($"Total ahorros:   L. {totalAhorros:N2}");
-                Console.WriteLine($"Balance final:   L. {(totalIngresos - totalGastos - totalAhorros):N2}");
+                Console.WriteLine($"Total ingresos: L. {totalIngresos:N2}");
+                Console.WriteLine($"Total gastos:   L. {totalGastos:N2}");
+                Console.WriteLine($"Total ahorros:  L. {totalAhorros:N2}");
+                Console.WriteLine($"Balance final:  L. {(totalIngresos - totalGastos - totalAhorros):N2}");
             }
             else
             {
@@ -292,7 +270,7 @@ namespace PresupuestoPersonal.Menus
 
             Presupuesto p = PresupuestoValidaciones.Leer(id);
 
-            Console.WriteLine($"\nEsta seguro que desea eliminar '{p.NombrePresupuesto}'? (s/n): ");
+            Console.Write($"\nEsta seguro que desea eliminar '{p.NombrePresupuesto}'? (s/n): ");
             string confirmacion = Console.ReadLine();
 
             if (confirmacion.ToLower() == "s")

@@ -28,21 +28,18 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_actualizar_subcategoria
-    @p_id_subcategoria int,
-    @p_nombre_subcategoria varchar,
-    @p_descripcion varchar,
-    @p_modificado_por int
-AS 
-BEGIN
-    UPDATE subcategorias
-    SET 
-        nombre_subcategoria = @p_nombre_subcategoria,
-        descripcion = @p_descripcion,
-        modificado_por = @p_modificado_por,
-        modificado_en = SYSDATETIME()
-    WHERE id_subcategoria = @p_id_subcategoria;
-END;
-GO
+	@p_id_subcategoria int,
+	@p_nombre_subcategoria varchar(200),
+	@p_modificado_por int
+as
+begin
+	update subcategorias set
+		nombre_subcategoria = @p_nombre_subcategoria,
+		modificado_por= @p_modificado_por,
+		modificado_en= getdate()
+	where id_subcategoria = @p_id_subcategoria;
+end
+go
 
 CREATE OR ALTER PROCEDURE sp_eliminar_subcategoria
     @p_id_subcategoria int,

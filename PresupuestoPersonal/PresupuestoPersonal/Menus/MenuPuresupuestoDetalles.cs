@@ -1,5 +1,4 @@
-﻿// MenuPresupuestoDetalles.cs
-using PresupuestoPersonal.Models;
+﻿using PresupuestoPersonal.Models;
 using PresupuestoPersonal.Validaciones;
 
 namespace PresupuestoPersonal.Menus
@@ -31,24 +30,12 @@ namespace PresupuestoPersonal.Menus
                 {
                     switch (opcion)
                     {
-                        case "1":
-                            Listar(usuario);
-                            break;
-                        case "2":
-                            Consultar();
-                            break;
-                        case "3":
-                            Insertar(usuario);
-                            break;
-                        case "4":
-                            Actualizar(usuario);
-                            break;
-                        case "5":
-                            Eliminar(usuario);
-                            break;
-                        case "0":
-                            salir = true;
-                            break;
+                        case "1": Listar(); break;
+                        case "2": Consultar(); break;
+                        case "3": Insertar(usuario); break;
+                        case "4": Actualizar(usuario); break;
+                        case "5": Eliminar(usuario); break;
+                        case "0": salir = true; break;
                         default:
                             Console.WriteLine("Opcion no valida.");
                             Console.ReadKey();
@@ -64,30 +51,31 @@ namespace PresupuestoPersonal.Menus
             }
         }
 
-        // En MenuPresupuestos.cs método Listar
-        private static void Listar(Usuario usuario)
+        private static void Listar()
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║       LISTA DE PRESUPUESTOS       ║");
+            Console.WriteLine("║    LISTA DE DETALLES PRESUPUESTO  ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
-            Console.Write("Filtrar por estado (activo/cerrado) o Enter para todos: ");
-            string estado = Console.ReadLine();
 
-            List<Presupuesto> presupuestos;
+            Console.Write("ID del presupuesto: ");
+            int idPresupuesto = int.Parse(Console.ReadLine());
 
-            // Si es admin ve todos, si no solo los suyos
-            if (usuario.Password == "ADMIN@2026!")
+            List<PresupuestoDetalle> detalles = PresupuestoDetalleValidaciones.ListarPorPresupuesto(idPresupuesto);
+
+            if (detalles.Count == 0)
             {
-                presupuestos = PresupuestoValidaciones.ListarTodos(estado);  // nuevo método
+                Console.WriteLine("No hay detalles para este presupuesto.");
             }
             else
             {
-                presupuestos = PresupuestoValidaciones.ListarPorUsuario(usuario.IdUsuario, estado);
+                Console.WriteLine($"{"ID",-5} {"ID Subcategoria",-18} {"Monto Mensual",-15} {"Observaciones",-20}");
+                Console.WriteLine(new string('-', 62));
+                foreach (PresupuestoDetalle pd in detalles)
+                    Console.WriteLine($"{pd.IdDetalle,-5} {pd.IdSubcategoria,-18} L.{pd.MontoMensual,-14:N2} {pd.Observaciones ?? "-",-20}");
             }
-          
-  
+
             Console.WriteLine();
             Console.WriteLine("Presione cualquier tecla para continuar...");
             Console.ReadKey();
@@ -97,7 +85,7 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║      CONSULTAR DETALLE            ║");
+            Console.WriteLine("║         CONSULTAR DETALLE         ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
@@ -107,11 +95,11 @@ namespace PresupuestoPersonal.Menus
             PresupuestoDetalle pd = PresupuestoDetalleValidaciones.Leer(id);
 
             Console.WriteLine();
-            Console.WriteLine($"ID:               {pd.IdDetalle}");
-            Console.WriteLine($"ID Presupuesto:   {pd.IdPresupuesto}");
-            Console.WriteLine($"ID Subcategoria:  {pd.IdSubcategoria}");
-            Console.WriteLine($"Monto mensual:    L. {pd.MontoMensual:N2}");
-            Console.WriteLine($"Observaciones:    {pd.Observaciones ?? "-"}");
+            Console.WriteLine($"ID:              {pd.IdDetalle}");
+            Console.WriteLine($"ID Presupuesto:  {pd.IdPresupuesto}");
+            Console.WriteLine($"ID Subcategoria: {pd.IdSubcategoria}");
+            Console.WriteLine($"Monto mensual:   L. {pd.MontoMensual:N2}");
+            Console.WriteLine($"Observaciones:   {pd.Observaciones ?? "-"}");
 
             Console.WriteLine();
             Console.WriteLine("Presione cualquier tecla para continuar...");
@@ -122,7 +110,7 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║       INSERTAR DETALLE            ║");
+            Console.WriteLine("║         INSERTAR DETALLE          ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
@@ -137,8 +125,9 @@ namespace PresupuestoPersonal.Menus
             Console.Write("Monto mensual:       ");
             nuevo.MontoMensual = decimal.Parse(Console.ReadLine());
 
-            Console.Write("Observaciones:       ");
-            nuevo.Observaciones = Console.ReadLine();
+            Console.Write("Observaciones (Enter para omitir): ");
+            string obs = Console.ReadLine();
+            nuevo.Observaciones = string.IsNullOrEmpty(obs) ? null : obs;
 
             PresupuestoDetalleValidaciones.Insertar(nuevo, usuario.IdUsuario);
 
@@ -151,7 +140,7 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║       ACTUALIZAR DETALLE          ║");
+            Console.WriteLine("║         ACTUALIZAR DETALLE        ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
@@ -183,7 +172,7 @@ namespace PresupuestoPersonal.Menus
         {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║       ELIMINAR DETALLE            ║");
+            Console.WriteLine("║         ELIMINAR DETALLE          ║");
             Console.WriteLine("╚══════════════════════════════════╝");
             Console.WriteLine();
 
@@ -192,7 +181,7 @@ namespace PresupuestoPersonal.Menus
 
             PresupuestoDetalle pd = PresupuestoDetalleValidaciones.Leer(id);
 
-            Console.WriteLine($"\nEsta seguro que desea eliminar el detalle de subcategoria {pd.IdSubcategoria}? (s/n): ");
+            Console.Write($"\nEsta seguro que desea eliminar el detalle de subcategoria {pd.IdSubcategoria}? (s/n): ");
             string confirmacion = Console.ReadLine();
 
             if (confirmacion.ToLower() == "s")

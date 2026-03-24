@@ -77,7 +77,7 @@ namespace PresupuestoPersonal.DataAccess
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-            cmd.Parameters.AddWithValue("@p_tipo", tipo ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_tipo", string.IsNullOrEmpty(tipo) ? (object)DBNull.Value : tipo);
 
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())

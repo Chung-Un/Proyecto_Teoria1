@@ -87,19 +87,15 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_listar_usuarios
-AS
-BEGIN
-    SELECT 
-        id_usuario,
-       CONCAT(primer_nombre,' ',primer_apellido) AS nombre_completo,
-		correo_electronico,
-		CASE
-			WHEN estado_usuario =1 
-			THEN 'Activo'
-			ELSE 'Inactivo'
-		END AS estado,
-        fecha_ingreso,
-        salario_mensual_base
-    FROM usuarios
-END;
-GO
+as
+begin
+	select
+		u.id_usuario,
+		u.correo_electronico,
+		concat(u.primer_nombre, ' ', u.primer_apellido) as nombre_completo,
+		case when u.estado_usuario = 1 then 'Activo' else 'Inactivo' end as estado
+	from usuarios u
+	where u.estado_usuario = 1
+	order by u.primer_nombre;
+end
+go

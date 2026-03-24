@@ -100,31 +100,32 @@ END;
 GO
 
 CREATE OR ALTER PROCEDURE sp_consultar_transaccion
-    @p_id_transaccion int
-AS
-BEGIN
-    SELECT 
-        t.id_usuario,
-        t.id_detalle,
-        t.anio_transaccion,
-        t.mes_transaccion,
-        t.id_subcategoria,
-        t.tipo_transaccion,
-        t.descripcion_movimiento,
-        t.monto_transaccion,
-        t.fecha_transaccion,
-        t.metodo_pago,
-        t.numero_factura,
-        t.observaciones,
-        t.fecha_y_hora_registro,
-        t.creado_por,
-        t.modificado_por,
-        t.creado_en,
-        t.modificado_en
-    FROM transacciones t
-    WHERE t.id_transaccion = @p_id_transaccion;
-END;
-GO
+	@p_id_transaccion int
+as
+begin
+	select
+		t.id_transaccion,
+		t.id_usuario,
+		t.id_detalle,
+		t.anio_transaccion,
+		t.mes_transaccion,
+		t.id_subcategoria,
+		t.tipo_transaccion,
+		t.descripcion_movimiento,
+		t.monto_transaccion,
+		t.fecha_transaccion,
+		t.metodo_pago,
+		t.numero_factura,
+		t.observaciones,
+		t.fecha_y_hora_registro,
+		t.creado_por,
+		t.modificado_por,
+		t.creado_en,
+		t.modificado_en
+	from transacciones t
+	where t.id_transaccion = @p_id_transaccion;
+end
+go
 
 CREATE OR ALTER PROCEDURE sp_listar_transacciones_presupuestos
     @p_id_presupuesto    int,

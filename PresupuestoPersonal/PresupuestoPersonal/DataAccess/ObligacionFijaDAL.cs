@@ -14,7 +14,6 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
             cmd.Parameters.AddWithValue("@p_id_subcategoria", obf.IdSubcategoria);
             cmd.Parameters.AddWithValue("@p_nombre", obf.NombreObligacion);
-            cmd.Parameters.AddWithValue("@p_descripcion", DBNull.Value);
             cmd.Parameters.AddWithValue("@p_monto", obf.MontoMensual);
             cmd.Parameters.AddWithValue("@p_dia_vencimiento", obf.DiaVencimiento);
             cmd.Parameters.AddWithValue("@p_fecha_inicio", obf.FechaInicio.ToDateTime(TimeOnly.MinValue));
@@ -34,7 +33,6 @@ namespace PresupuestoPersonal.DataAccess
 
             cmd.Parameters.AddWithValue("@p_id_obligacion", obf.IdObligacion);
             cmd.Parameters.AddWithValue("@p_nombre", obf.NombreObligacion);
-            cmd.Parameters.AddWithValue("@p_descripcion", DBNull.Value);
             cmd.Parameters.AddWithValue("@p_monto", obf.MontoMensual);
             cmd.Parameters.AddWithValue("@p_dia_vencimiento", obf.DiaVencimiento);
             cmd.Parameters.AddWithValue("@p_fecha_fin", obf.FechaFin.HasValue
@@ -109,9 +107,7 @@ namespace PresupuestoPersonal.DataAccess
                     DiaVencimiento = reader.GetByte(reader.GetOrdinal("dia_vencimiento")),
                     EstadoVigente = reader.GetBoolean(reader.GetOrdinal("estado_vigente")),
                     FechaInicio = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("fecha_inicio"))),
-                    FechaFin = reader.IsDBNull(reader.GetOrdinal("fecha_fin"))
-                                       ? null
-                                       : DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("fecha_fin")))
+                    FechaFin = reader.IsDBNull(reader.GetOrdinal("fecha_fin"))? null: DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("fecha_fin")))
                 });
             }
             return lista;
