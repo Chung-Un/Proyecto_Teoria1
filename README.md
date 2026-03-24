@@ -186,3 +186,47 @@ Server=localhost\SQLEXPRESS;Database=PresupuestoPersonal;Integrated Security=Tru
 ```
 
 Usa **Windows Authentication** — no requiere usuario ni contraseña adicional.
+
+# Autoevaluación
+
+**Estudiante: Chung Un Yum**  
+**Fecha: 24/03/2026**  
+
+---
+
+## 1. Reflexión sobre el Proceso de Desarrollo
+
+> *La realización de este proyecto me ha ayudado a reforzar los conocimientos adquiridos en la clase de Teoría de Base de Datos 1. Desde la creacion de tablas, hasta la conexion entre una base de datos y un programa, todo fue un gran proceso de aprendizaje.*
+
+### 1.1 Diseño de la Base de Datos
+*Las relaciones entre entidades fueron revisadas en clase, esto se evidencia con la imagen adjunta en el folder de documentos.*
+
+### 1.2 Desarrollo del Código
+*El codigo se fue realizando en etapas, primero la conexion, luego la definicion de las entidades, los procedimientos, menus y reportes.*
+
+### 1.3 Pruebas
+*Se realizaron pruebas con ambos el usuario administrador y usuarios normales.*
+---
+
+## 2. Desafíos Enfrentados 
+
+> *Los principales desafios fueron los reportes, especialmente los procedimientos atados a estos debido al uso de crosstab.*
+> *Partes en las que se utilizó ayuda de IA: el frontend, los reportes y la generacion de datos.*
+
+## 3. Aprendizajes Clave
+
+> *Como se mencionó al incio, la realización del proyecto ayudó a reforzar los conocimmientos adquiridos en clase: procedimientos, triggers, crosstabs, conexiones, etc. *
+
+### Aprendizaje Personal más Valioso
+>*El proyecto me enseño la importancia de las bases de datos, en clases anteriores, realizar un proyecto como este sin base de datos hubiera resultado mucho mas tedioso y fastidioso.*
+
+---
+
+## 4. Sugerencias de Mejora del Proyecto
+
+> *Mejoraria la parte visual del proyecto, la haría mas agradable para el usuario; además, tendria un sistema de menus mas complejos y completos.*
+
+
+
+---
+
