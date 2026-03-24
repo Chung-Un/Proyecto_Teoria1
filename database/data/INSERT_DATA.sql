@@ -1,3 +1,20 @@
+INSERT INTO usuarios (password, correo_electronico, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_ingreso, salario_mensual_base, estado_usuario, creado_por, modificado_por, creado_en, modificado_en)
+VALUES
+('ADMIN@2026!',      'admin@presupuesto.hn',     'Carlos',    'Alberto',  'Martinez',  'Lopez',    GETDATE(), 25000.00, 1, 1, 1, GETDATE(), GETDATE()),
+-- Usuarios regulares
+('Pass@1234',        'ana.garcia@gmail.com',      'Ana',       'Maria',    'Garcia',    'Reyes',    GETDATE(), 18000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'jose.hernandez@gmail.com',  'Jose',      'Luis',     'Hernandez', 'Mejia',    GETDATE(), 22000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'maria.rodriguez@gmail.com', 'Maria',     'Elena',    'Rodriguez', 'Castro',   GETDATE(), 15000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'pedro.lopez@gmail.com',     'Pedro',     'Antonio',  'Lopez',     'Flores',   GETDATE(), 20000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'lucia.martinez@gmail.com',  'Lucia',     'Isabel',   'Martinez',  'Diaz',     GETDATE(), 17500.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'diego.flores@gmail.com',    'Diego',     'Alejandro','Flores',    'Zuniga',   GETDATE(), 19000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'sofia.castro@gmail.com',    'Sofia',     'Valentina','Castro',    'Morales',  GETDATE(), 16000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'andres.mejia@gmail.com',    'Andres',    'Felipe',   'Mejia',     'Aguilar',  GETDATE(), 23000.00, 1, 1, 1, GETDATE(), GETDATE()),
+('Pass@1234',        'laura.zuniga@gmail.com',    'Laura',     'Patricia', 'Zuniga',    'Pineda',   GETDATE(), 14000.00, 1, 1, 1, GETDATE(), GETDATE());
+GO
+ 
+
+-Categorias
 -- TIPO: ingreso
 INSERT INTO categorias (nombre_categoria, tipo_categoria, nombre_icono, color_hexademical, orden_presentacion, creado_por, modificado_por, creado_en, modificado_en)
 VALUES

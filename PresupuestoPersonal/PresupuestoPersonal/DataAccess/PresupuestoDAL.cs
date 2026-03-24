@@ -174,7 +174,7 @@ namespace PresupuestoPersonal.DataAccess
             cmd.Parameters.AddWithValue("@p_id_presupuesto", idPresupuesto);
             cmd.Parameters.AddWithValue("@p_modificado_por", modificadoPor);
 
-            //output
+            
             SqlParameter pIngresos = new SqlParameter("@p_total_ingresos", System.Data.SqlDbType.Decimal);
             SqlParameter pGastos = new SqlParameter("@p_total_gastos", System.Data.SqlDbType.Decimal);
             SqlParameter pAhorros = new SqlParameter("@p_total_ahorros", System.Data.SqlDbType.Decimal);
