@@ -215,7 +215,7 @@ Usa **Windows Authentication** — no requiere usuario ni contraseña adicional.
 
 ## 3. Aprendizajes Clave
 
-> *Como se mencionó al incio, la realización del proyecto ayudó a reforzar los conocimmientos adquiridos en clase: procedimientos, triggers, crosstabs, conexiones, etc. *
+> *Como se mencionó al incio, la realización del proyecto ayudó a reforzar los conocimmientos adquiridos en clase: procedimientos, triggers, crosstabs, conexiones, etc.*
 
 ### Aprendizaje Personal más Valioso
 >*El proyecto me enseño la importancia de las bases de datos, en clases anteriores, realizar un proyecto como este sin base de datos hubiera resultado mucho mas tedioso y fastidioso.*
