@@ -33,10 +33,8 @@ Aplicar los conocimientos de **Teoria de Base de Datos I** mediante el diseño, 
 
 - **Microsoft SQL Server** — Motor de base de datos relacional
 - **C#** — Lenguaje de programación principal
-- **Entity Framework (LINQ)** — ORM para el acceso a datos
-- **Frontend** — Interfaz de usuario simplística
+-- **ADO.NET**
 
----
 
 ## Estructura del Proyecto
 ```
