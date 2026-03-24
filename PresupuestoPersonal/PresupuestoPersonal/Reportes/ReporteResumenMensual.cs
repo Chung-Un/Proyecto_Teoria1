@@ -59,7 +59,7 @@ namespace PresupuestoPersonal.Reportes
             QuestPDF.Settings.License = LicenseType.Community;
 
             List<FilaResumenMensual> datos = ObtenerDatos(idUsuario, anioInicio, mesInicio, anioFin, mesFin);
-            string rutaPDF = Path.Combine(carpetaReportes, $"Reporte1_ResumenMensual_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+            string rutaPDF = Path.Combine(carpetaReportes, $"Reporte1_ResumenMensual_{nombreUsuario}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
 
             Document.Create(container =>
             {
